@@ -1,6 +1,17 @@
 version: "3.7"
 
 services:
+  awscli:
+    build: awscli
+    environment:
+      AWS_ACCESS_KEY_ID: XXX
+      AWS_SECRET_ACCESS_KEY: XXX
+  herokucli:
+    build: herokucli
+    environment:
+      HEROKU_API_KEY: /credentials
+    volumes:
+      - ./heroku/credentials:/credentials
   db:
     image: postgres:alpine
     ports:

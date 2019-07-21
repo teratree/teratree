@@ -1,0 +1,12 @@
+{% if experience_list %}
+    <ul>
+    {% for experience in experience_list %}
+        <li><a href="{% url 'experiment:experience-detail' experience.id %}">{{ experience.id }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Experience Reports are available.</p>
+{% endif %}
+
+
+<p><a href="{% url 'experiment:experience-create' %}">Add an Experience Report</a></p>

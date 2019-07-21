@@ -30,13 +30,15 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'teratree.apps.AdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'experiment',
 ]
 
 MIDDLEWARE = [
@@ -128,7 +130,7 @@ from djangosharedsettings.timezone import *
 
 ROOT_DIR = os.path.dirname(BASE_DIR)
 MIDDLEWARE.insert(MIDDLEWARE.index('django.middleware.security.SecurityMiddleware')+1, 'whitenoise.middleware.WhiteNoiseMiddleware')
-INSTALLED_APPS.insert(INSTALLED_APPS.index('django.contrib.admin'), 'storages')
+INSTALLED_APPS.insert(INSTALLED_APPS.index('django.contrib.auth'), 'storages')
 STATIC_ROOT = os.path.join(ROOT_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),

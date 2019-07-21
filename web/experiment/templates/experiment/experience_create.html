@@ -1,0 +1,7 @@
+<table>
+<form action="{% url 'experiment:experience-create' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <tr><td></td><td><input type="submit" value="Submit"></td></tr>
+</form>
+</table>

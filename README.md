@@ -43,13 +43,22 @@ For instructions on how to test email sending see `EMAIL.md`.
 Your will be hosted then at http://localhost:8000 (the port may be different if you configured a different `PORT` variable).
 
 ```
-docker-compose down && docker-compose up --build web db chrome && docker-compose logs -f web db chrome
+docker-compose down && docker-compose up --build web db && docker-compose logs -f web db
 ```
 
 5. Create your first app:
 
 ```
-docker-compose run web python manage.py startapp experiment
+docker-compose run --rm web python manage.py startapp experiment
+docker-compose run --rm web python manage.py makemigrations
+docker-compose run --rm web python manage.py migrate
+docker-compose run --rm web python manage.py createsuperuser
+```
+
+You can connect to the PostgreSQL database with:
+
+```
+docker-compose run --rm web psql -h db -U postgres postgres
 ```
 
 ### DB
@@ -119,13 +128,15 @@ Finally run these one at a time, otherwise they might not all get run:
 
 
 ```
+# See https://devcenter.heroku.com/articles/local-development-with-docker-compose
 heroku login
 heroku container:login
 git stash
-cd web
-docker build -t $DEPLOYMENT_TARGET:$BACKEND_VERSION .
-docker tag $DEPLOYMENT_TARGET:$BACKEND_VERSION registry.heroku.com/$DEPLOYMENT_TARGET/web
-docker push registry.heroku.com/$DEPLOYMENT_TARGET/web
+heroku container:push web
+# cd web
+# docker build -t $DEPLOYMENT_TARGET:$BACKEND_VERSION .
+# docker tag $DEPLOYMENT_TARGET:$BACKEND_VERSION registry.heroku.com/$DEPLOYMENT_TARGET/web
+# docker push registry.heroku.com/$DEPLOYMENT_TARGET/web
 heroku container:release --app $DEPLOYMENT_TARGET web
 heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/local/bin/python3 manage.py migrate
 git stash pop
