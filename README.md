@@ -128,23 +128,22 @@ Finally run these one at a time, otherwise they might not all get run:
 
 
 ```
+alias heroku='docker-compose -f `pwd`/docker-compose.yml run --rm heroku'
 # See https://devcenter.heroku.com/articles/local-development-with-docker-compose
 heroku login
 heroku container:login
 git stash
-heroku container:push web
-# cd web
-# docker build -t $DEPLOYMENT_TARGET:$BACKEND_VERSION .
-# docker tag $DEPLOYMENT_TARGET:$BACKEND_VERSION registry.heroku.com/$DEPLOYMENT_TARGET/web
-# docker push registry.heroku.com/$DEPLOYMENT_TARGET/web
-heroku container:release --app $DEPLOYMENT_TARGET web
+cd web
+heroku container:push -a DEPLOYMENT_TARGET web
+heroku container:release -a $DEPLOYMENT_TARGET web
 heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/local/bin/python3 manage.py migrate
+heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/local/bin/python3 manage.py createsuperuser
 git stash pop
 ```
 
 Other useful commands:
 
 ```
-heroku config --app $DEPLOYMENT_TARGET
+EDITOR=vim heroku config:edit --app $DEPLOYMENT_TARGET
 heroku logs --tail --app $DEPLOYMENT_TARGET
 ```

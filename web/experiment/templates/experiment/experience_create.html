@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <table>
 <form action="{% url 'experiment:experience-create' %}" method="post">
     {% csrf_token %}
@@ -5,3 +8,4 @@
     <tr><td></td><td><input type="submit" value="Submit"></td></tr>
 </form>
 </table>
+{% endblock %}

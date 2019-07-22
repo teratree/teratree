@@ -1,13 +1,15 @@
 version: "3.7"
 
 services:
-  awscli:
-    build: awscli
+  aws:
+    build: awsi
     environment:
       AWS_ACCESS_KEY_ID: XXX
       AWS_SECRET_ACCESS_KEY: XXX
-  herokucli:
-    build: herokucli
+  git:
+    build: git
+  heroku:
+    build: heroki
     environment:
       HEROKU_API_KEY: /credentials
     volumes:
@@ -28,9 +30,9 @@ services:
       PORT: 8000
       DJANGO_SETTINGS_MODULE: teratree.settings.dev
       DATABASE_URL: postgres://postgres@db/postgres
-      AWS_ACCESS_KEY_ID: XXX
-      AWS_SECRET_ACCESS_KEY: XXX
-      AWS_STORAGE_BUCKET_NAME: XXX
+      MEDIA_AWS_ACCESS_KEY_ID: XXX
+      MEDIA_AWS_SECRET_ACCESS_KEY: XXX
+      MEDIA_AWS_STORAGE_BUCKET_NAME: XXX
       SECRET_KEY: XXX
       EMAIL_PORT: 465
       EMAIL_USE_TLS: "false"

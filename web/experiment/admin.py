@@ -5,10 +5,6 @@ from .models import Learning, LearningComment, LearningFromExperiment, LearningF
 from .models import Experience, ExperienceComment, ExperimentBasedOnLearning, ExperimentBasedOnExperience
 from .models import Results00001Data
 
-#
-# Learning
-#
-
 class LearningFromExperimentInline(admin.TabularInline):
     model = LearningFromExperiment
     extra = 0
@@ -20,19 +16,6 @@ class LearningFromExperienceInline(admin.TabularInline):
 class LearningCommentInline(admin.TabularInline):
     model = LearningComment
     extra = 0
-
-@admin.register(Learning)
-class LearningAdmin(admin.ModelAdmin):
-    inlines = [
-        LearningFromExperimentInline,
-        LearningFromExperienceInline,
-        LearningCommentInline,
-    ]
-
-
-#
-# Experiment
-#
 
 class ExperimentBasedOnLearningInline(admin.TabularInline):
     model = ExperimentBasedOnLearning
@@ -46,6 +29,24 @@ class ExperimentCommentInline(admin.TabularInline):
     model = ExperimentComment
     extra = 0
 
+#
+# Learning
+#
+
+@admin.register(Learning)
+class LearningAdmin(admin.ModelAdmin):
+    inlines = [
+        LearningFromExperimentInline,
+        LearningFromExperienceInline,
+        LearningCommentInline,
+        ExperimentBasedOnLearningInline,
+    ]
+
+
+#
+# Experiment
+#
+
 @admin.register(Experiment)
 class ExperimentAdmin(admin.ModelAdmin):
     list_display = ('title', 'poster',)
@@ -53,6 +54,7 @@ class ExperimentAdmin(admin.ModelAdmin):
         ExperimentBasedOnLearningInline,
         ExperimentBasedOnExperienceInline,
         ExperimentCommentInline,
+        LearningFromExperimentInline,
     ]
 
 
@@ -68,6 +70,7 @@ class ExperienceCommentInline(admin.TabularInline):
 class ExperienceAdmin(admin.ModelAdmin):
     inlines = [
         ExperienceCommentInline,
+        ExperimentBasedOnExperienceInline,
     ]
 
 

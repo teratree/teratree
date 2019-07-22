@@ -4,6 +4,9 @@ from django.urls import reverse
 from .models import Experience
 from .forms import ExperienceForm
 
+def home(request):
+    context = {}
+    return render(request, 'experiment/home.html', context)
 
 def experience_index(request):
     experience_list = Experience.objects.order_by('-posted')
