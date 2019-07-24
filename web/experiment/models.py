@@ -23,47 +23,27 @@ IMPORTANCE_CHOICES = [
 ]
 
 class Experiment(models.Model):
-    title = models.CharField(blank=False, unique=True, max_length=MAX_LENGTH)
     poster = models.ForeignKey('Person', on_delete=models.PROTECT, related_name='posted_experiments', null=True, blank=True)
     posted = models.DateTimeField(default=timezone.now)
-    owner = models.ForeignKey('Person', on_delete=models.PROTECT, related_name='owned_experiments', null=True, blank=True)
-    due = models.DateTimeField(default=two_weeks)
+
     hypothesis = models.TextField(blank=True, default='')
-    importance = models.CharField(max_length=6, choices=IMPORTANCE_CHOICES, default=NA)
     experiment = models.TextField(blank=True, default='')
-    cost = models.CharField(max_length=6, choices=IMPORTANCE_CHOICES, default=NA)
-    data_reliability = models.CharField(max_length=6, choices=IMPORTANCE_CHOICES, default=NA)
     measurement = models.TextField(blank=True, default='')
+
+    importance = models.CharField(max_length=6, choices=IMPORTANCE_CHOICES, default=NA)
+    cost = models.CharField(max_length=6, choices=IMPORTANCE_CHOICES, default=NA)
     time_required = models.CharField(max_length=6, choices=IMPORTANCE_CHOICES, default=NA)
-    condition = models.TextField(blank=True, default='')
-
-    def __str__(self):
-        return f'Experiment {self.title}'
-
-class Learning(models.Model):
-    title = models.CharField(blank=False, unique=True, max_length=MAX_LENGTH)
-    poster = models.ForeignKey('Person', on_delete=models.PROTECT, related_name='posted_learnings', null=True, blank=True)
-    posted = models.DateTimeField(default=timezone.now)
-    # XXX Would like a date guestimate field
-    occurred = models.DateTimeField(default=timezone.now)
-    hypothesis = models.TextField(blank=True, default='')
     data_reliability = models.CharField(max_length=6, choices=IMPORTANCE_CHOICES, default=NA)
+    action_required = models.CharField(max_length=6, choices=IMPORTANCE_CHOICES, default=NA)
+
     observation = models.TextField(blank=True, default='')
     learning = models.TextField(blank=True, default='')
-    action_required = models.CharField(max_length=6, choices=IMPORTANCE_CHOICES, default=NA)
     action = models.TextField(blank=True, default='')
 
-class LearningComment(models.Model):
-    experiment = models.ForeignKey('Learning', on_delete=models.CASCADE)
-    comment = models.TextField(blank=True, default='')
-    poster = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, related_name='posted_learning_comments')
-    posted = models.DateTimeField(default=timezone.now)
+    parents = models.ManyToManyField('Experiment', related_name='children', blank=True)
 
-class ExperienceComment(models.Model):
-    experiment = models.ForeignKey('Experience', on_delete=models.CASCADE)
-    comment = models.TextField(blank=True, default='')
-    poster = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, related_name='posted_experience_comments')
-    posted = models.DateTimeField(default=timezone.now)
+    def __str__(self):
+        return f'Experiment {self.hypothesis}'
 
 class ExperimentComment(models.Model):
     experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE)
@@ -71,24 +51,18 @@ class ExperimentComment(models.Model):
     poster = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, related_name='posted_experiment_comments')
     posted = models.DateTimeField(default=timezone.now)
 
-class LearningFromExperiment(models.Model):
-    learning = models.ForeignKey('Learning', on_delete=models.PROTECT)
-    experiment = models.ForeignKey('Experiment', on_delete=models.PROTECT)
+# class ExperimentParent(models.Model):
+#     parent_experiment = models.ForeignKey('Experiment', related_name='children', on_delete=models.CASCADE)
+#     child_experiment = models.ForeignKey('Experiment', related_name='parents', on_delete=models.CASCADE)
 
-class LearningFromExperience(models.Model):
-    learning = models.ForeignKey('Learning', on_delete=models.PROTECT)
-    experience = models.ForeignKey('Experience', on_delete=models.PROTECT)
+class ExperimentRelatedExperience(models.Model):
+    experiment = models.ForeignKey('Experiment', related_name='related_experiences', on_delete=models.CASCADE)
+    experience = models.ForeignKey('Experience', related_name='related_experiments', on_delete=models.CASCADE)
 
-class ExperimentBasedOnLearning(models.Model):
-    experiment = models.ForeignKey('Experiment', on_delete=models.PROTECT)
-    learning = models.ForeignKey('Learning', on_delete=models.PROTECT)
-
-class ExperimentBasedOnExperience(models.Model):
-    experiment = models.ForeignKey('Experiment', on_delete=models.PROTECT)
-    experience = models.ForeignKey('Experience', on_delete=models.PROTECT)
 
 class Person(models.Model):
     greeting_name = models.CharField(blank=True, default='', max_length=MAX_LENGTH)
+    last_name = models.CharField(blank=True, default='', max_length=MAX_LENGTH)
     email = models.EmailField(blank=True, default='', max_length=MAX_LENGTH)
     username = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -100,6 +74,8 @@ class Person(models.Model):
             s += f' ({self.username})'
         return s
 
+    class Meta:
+        verbose_name_plural='people'
 
 class Experience(models.Model):
     experience = models.TextField(blank=True, default='')
@@ -111,4 +87,10 @@ class Experience(models.Model):
 
     def __str__(self):
         return f'{self.posted} {self.snippet()}'
+
+class ExperienceComment(models.Model):
+    experience = models.ForeignKey('Experience', on_delete=models.CASCADE)
+    comment = models.TextField(blank=True, default='')
+    poster = models.ForeignKey('Person', on_delete=models.SET_NULL, null=True, related_name='posted_experience_comments')
+    posted = models.DateTimeField(default=timezone.now)
 

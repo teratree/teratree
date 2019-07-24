@@ -56,6 +56,12 @@ manage.py migrate
 manage.py createsuperuser
 ```
 
+or is you are importing data from within the container:
+
+```
+manage.py loaddata /code/data.json
+```
+
 You can connect to the PostgreSQL database with:
 
 ```
@@ -112,12 +118,6 @@ Set the deployment target to the Heroku app name:
 
 ```
 export DEPLOYMENT_TARGET=teratree-staging
-```
-
-Create a new version number each time. You can find the old number like this:
-
-```
-docker images | grep $DEPLOYMENT_TARGET
 ```
 
 Then commit any changes you want to deploy.

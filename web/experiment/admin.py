@@ -1,27 +1,11 @@
 from django.contrib import admin
-from .models import Experiment, ExperimentComment
+from .models import Experience, ExperienceComment
+from .models import Experiment, ExperimentComment, ExperimentRelatedExperience
 from .models import Person
-from .models import Learning, LearningComment, LearningFromExperiment, LearningFromExperience
-from .models import Experience, ExperienceComment, ExperimentBasedOnLearning, ExperimentBasedOnExperience
 
-class LearningFromExperimentInline(admin.TabularInline):
-    model = LearningFromExperiment
-    extra = 0
 
-class LearningFromExperienceInline(admin.TabularInline):
-    model = LearningFromExperience
-    extra = 0
-
-class LearningCommentInline(admin.TabularInline):
-    model = LearningComment
-    extra = 0
-
-class ExperimentBasedOnLearningInline(admin.TabularInline):
-    model = ExperimentBasedOnLearning
-    extra = 0
-
-class ExperimentBasedOnExperienceInline(admin.TabularInline):
-    model = ExperimentBasedOnExperience
+class ExperimentRelatedExperienceInline(admin.TabularInline):
+    model = ExperimentRelatedExperience
     extra = 0
 
 class ExperimentCommentInline(admin.TabularInline):
@@ -29,31 +13,15 @@ class ExperimentCommentInline(admin.TabularInline):
     extra = 0
 
 #
-# Learning
-#
-
-@admin.register(Learning)
-class LearningAdmin(admin.ModelAdmin):
-    inlines = [
-        LearningFromExperimentInline,
-        LearningFromExperienceInline,
-        LearningCommentInline,
-        ExperimentBasedOnLearningInline,
-    ]
-
-
-#
 # Experiment
 #
 
 @admin.register(Experiment)
 class ExperimentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'poster',)
+    list_display = ('hypothesis', 'poster', 'importance', 'cost', 'time_required', 'data_reliability', 'action_required')
     inlines = [
-        ExperimentBasedOnLearningInline,
-        ExperimentBasedOnExperienceInline,
         ExperimentCommentInline,
-        LearningFromExperimentInline,
+        ExperimentRelatedExperienceInline,
     ]
 
 
@@ -69,7 +37,7 @@ class ExperienceCommentInline(admin.TabularInline):
 class ExperienceAdmin(admin.ModelAdmin):
     inlines = [
         ExperienceCommentInline,
-        ExperimentBasedOnExperienceInline,
+        ExperimentRelatedExperienceInline,
     ]
 
 
@@ -79,5 +47,4 @@ class ExperienceAdmin(admin.ModelAdmin):
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
-    pass
-
+    list_display = ('greeting_name', 'last_name', 'email', 'username')

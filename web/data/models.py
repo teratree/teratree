@@ -14,3 +14,6 @@ class Questions00001(models.Model):
     question2 = models.TextField(blank=True, default='', help_text='If I gave you a tree tomorrow what would you do with it?')
     question3 = models.TextField(blank=True, default='', help_text='How would you get a tree?')
     cczero = models.BooleanField(default=False, help_text='Can we put your name and answers online under a cczero license so others can use them?')
+
+    class Meta:
+        verbose_name_plural='questions00001'
