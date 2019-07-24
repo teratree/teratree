@@ -65,9 +65,11 @@ manage.py loaddata /code/data.json
 You can connect to the PostgreSQL database with:
 
 ```
-docker-compose run --rm web psql -h db -U postgres postgres
+alias psql='docker-compose -f `pwd`/docker-compose.yml run --rm web psql'
+psql -h db -U postgres postgres
 ```
 
+(You will need to run `psql -h db -U postgres postgres -c 'DELETE FROM wagtailcore_site CASCADE; DELETE FROM wagtailcore_grouppagepermission CASCADE; DELETE FROM wagtailcore_page CASCADE;'` first if you are loading an entire dataset from a freshly migrated database since wagtail adds some data you need to remove first)
 
 In development remember to clear your browser cache once you've changed static files and run `manage.py collectstatic` by restarting the Docker container. Otherwise the browser will use the cached old version.
 
@@ -76,16 +78,16 @@ In development remember to clear your browser cache once you've changed static f
 If you are starting with an empty database you'll want to set up database tables and an admin user:
 
 ```
-docker exec -it teratree_web_1 /usr/local/bin/python3 manage.py migrate
-docker exec -it teratree_web_1 /usr/local/bin/python3 manage.py createsuperuser
+manage.py migrate
+manage.py createsuperuser
 ```
 
 
 ### Syntax Formatting
 
 ```
-docker exec -it teratree_web_1 /usr/local/bin/autopep8 --diff -r /code/
-docker exec -it teratree_web_1 /usr/local/bin/autopep8 --in-place -r /code/
+autopep8 --diff --exclude /code/mysite/settings/base.py -r /code/
+autopep8 --in-place --exclude /code/mysite/settings/base.py -r /code/
 ```
 
 
@@ -111,7 +113,7 @@ Load the viewer and enter the address `localhost:5900` while the `chrome` docker
 Make sure static files are up to date:
 
 ```
-docker exec -it teratree_web_1 /usr/local/bin/python3 manage.py collectstatic --noinput --link
+manage.py collectstatic --noinput --link
 ```
 
 Set the deployment target to the Heroku app name:
