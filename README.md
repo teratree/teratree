@@ -49,10 +49,11 @@ docker-compose down && docker-compose up --build web db && docker-compose logs -
 5. Create your first app:
 
 ```
-docker-compose run --rm web python manage.py startapp experiment
-docker-compose run --rm web python manage.py makemigrations
-docker-compose run --rm web python manage.py migrate
-docker-compose run --rm web python manage.py createsuperuser
+alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python manage.py'
+manage.py startapp experiment
+manage.py makemigrations
+manage.py migrate
+manage.py createsuperuser
 ```
 
 You can connect to the PostgreSQL database with:
@@ -60,6 +61,9 @@ You can connect to the PostgreSQL database with:
 ```
 docker-compose run --rm web psql -h db -U postgres postgres
 ```
+
+
+In development remember to clear your browser cache once you've changed static files and run `manage.py collectstatic` by restarting the Docker container. Otherwise the browser will use the cached old version.
 
 ### DB
 
@@ -116,28 +120,25 @@ Create a new version number each time. You can find the old number like this:
 docker images | grep $DEPLOYMENT_TARGET
 ```
 
-Then export the new version:
-
-```
-export BACKEND_VERSION=0.1.1
-```
-
 Then commit any changes you want to deploy.
 
 Finally run these one at a time, otherwise they might not all get run:
 
 
 ```
-alias heroku='docker-compose -f `pwd`/docker-compose.yml run --rm heroku'
+alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python manage.py'
+manage.py dumpdata --natural-foreign --natural-primary --indent 2 --format json > web/dump.json
+
 # See https://devcenter.heroku.com/articles/local-development-with-docker-compose
 heroku login
 heroku container:login
 git stash
 cd web
-heroku container:push -a DEPLOYMENT_TARGET web
+heroku container:push -a $DEPLOYMENT_TARGET web
 heroku container:release -a $DEPLOYMENT_TARGET web
 heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/local/bin/python3 manage.py migrate
-heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/local/bin/python3 manage.py createsuperuser
+heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/local/bin/python3 manage.py loaddata /code/dump.json
+# heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/local/bin/python3 manage.py createsuperuser
 git stash pop
 ```
 

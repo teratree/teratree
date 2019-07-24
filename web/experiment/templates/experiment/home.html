@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-Hello, world!
-
-{% endblock %}
 <p>From here you can:</p>
 
 <ul>
   <li>
     View the
-    <a href="{% url 'experiment:experience-list' %}">experience reports</a>
+    <a href="{% url 'experiment:experience-index' %}">experience reports</a>
     that have been kindy written up by planters, growers and land owners to
     help others learn how best to make their contribution to the teratree.
   </li>
@@ -17,78 +14,4 @@ Hello, world!
     <a href="{% url 'experiment:experience-create' %}">Add your own experience report</a>
   </li>
 </ul>
-
-<h1>Strategy</h1>
-
-<h2>Mission, Vision, Objectives, Strategy, Tactics Exercise</h2>
-
-<p>Background notes: If you leave it, it will become beautiful</p>
-
-
-<h3>Mission</h3>
-
-<ul>
-<li>Have fun                (people)</li>
-<li>Help wildlife           (land animals)</li>
-<li>Reverse climate change  (sea animals)</li>
-</ul>
-
-<h3>Vision</h3>
-
-<p>Landowners, growers and planters, empowered to make the bold decision to shape their own environment for the benefit of the themselves, and the wildlife around them, and to reverse climate change which will also give the world's reefs a chance to return.</p>
-
-<p>We're not so interested in dwelling on:</p>
-
-<ul>
-<li>species loss</li>
-<li>food production</li>
-<li>natural disasters e.g. flooding</li>
-<li>war</li>
-</ul>
-
-These are all negative things, and we want our brand to be immensily positive.
-
-Strategy
-
-* Identify land that could be used for planting (ideally in corridors)
-* Identify the best trees to be planted on that land (based on soil and the types of animals that could thrive in that environment)
-* Commission the growing of seedlings of the required varieties
-* Encourage everyone to plant one tree per year for their lifetimes
-
-Operations
-
-* Design hypotheses
-* Quickly run build-measure-learn experiments to test the hypotheses
-* Delegate as much of the hypothesis and experiment work as possible to participants
-
-Tactics
-
-* Minimum, minimum, minimum (includes efficiency as a value - don't want to produce more carbon in website costs than is saved)
-* Use BGS soil data
-* Use OS building data combined with satellite imagary to identify areas
-* See the barriers that prevent people actually planting trees and tackle them
-
-
-* Keep the planter experience incredibly simple, look at park run as an example
-
-
-
-
-The Why not? How about now? These people did it? Cycle.
-Many eyes make all bugs shallow -> Please use this to help contribute.
-Best code wins -> Different ideas will work best in different contexts.
-Cathedral vs the bazaar -> Lots of small solutions are better than one big perfect one in this context.
-Homesteading the neosphere -> Let's take satisfaction from the knowledge frontiers we're pushing.
-
-
-CC Zero
-
-Need to track:
-* Objections
-  -> Possible solutions
-* Case studies
-* Total number of trees planted by the community
-* Leaderboards
-
-
-
+{% endblock %}
