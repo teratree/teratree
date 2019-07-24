@@ -21,16 +21,24 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.core import urls as wagtail_urls
 
+from django.views.generic.base import RedirectView
+
+
 app_name = 'teratree'
 urlpatterns = [
-    path('admin/', admin.site.urls),
     # Instead, follow this pattern
     path('meeting/', include('meeting.urls')),
     path('data/', include('data.urls')),
     path('experiment/', include('experiment.urls')),
     # This is how wagtail recommends it is done, don't copy this
-    re_path(r'^cms/', include(wagtailadmin_urls)),
     re_path(r'^documents/', include(wagtaildocs_urls)),
+    path('cms/login/', RedirectView.as_view(url='/accounts/login', query_string=True, permanent=False), name='index'),
+    re_path(r'^cms/', include(wagtailadmin_urls)),
+    path('_util/login/', RedirectView.as_view(url='/accounts/login', query_string=True, permanent=False), name='index'),
+    path('admin/login/', RedirectView.as_view(url='/accounts/login', query_string=True, permanent=False), name='index'),
+    path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    # Put this after accounts above to use the AllAuth URLs by default
     re_path(r'^', include(wagtail_urls)),
 ]
 

@@ -49,7 +49,7 @@ docker-compose down && docker-compose up --build web db && docker-compose logs -
 5. Create your first app:
 
 ```
-alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python manage.py'
+alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python3 manage.py'
 manage.py startapp experiment
 manage.py makemigrations
 manage.py migrate
@@ -126,7 +126,7 @@ Finally run these one at a time, otherwise they might not all get run:
 
 
 ```
-alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python manage.py'
+alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python3 manage.py'
 manage.py dumpdata --natural-foreign --natural-primary --indent 2 --format json > web/dump.json
 
 # See https://devcenter.heroku.com/articles/local-development-with-docker-compose
@@ -136,9 +136,9 @@ git stash
 cd web
 heroku container:push -a $DEPLOYMENT_TARGET web
 heroku container:release -a $DEPLOYMENT_TARGET web
-heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/local/bin/python3 manage.py migrate
-heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/local/bin/python3 manage.py loaddata /code/dump.json
-# heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/local/bin/python3 manage.py createsuperuser
+heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py migrate
+heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py loaddata /code/dump.json
+# heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py createsuperuser
 git stash pop
 ```
 

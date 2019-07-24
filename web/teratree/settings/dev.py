@@ -1,4 +1,4 @@
-from .base import *
+from .aa import *
 
 
 MEDIA_ROOT = os.path.join(ROOT_DIR, 'media')

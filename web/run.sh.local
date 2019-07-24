@@ -5,7 +5,7 @@ if [ ! -d "/code/teratree" ]; then
   echo "Creating the Django project ..."
   cd /tmp/
   rm -rf /tmp/teratree
-  /usr/local/bin/django-admin startproject teratree
+  /usr/bin/django-admin startproject teratree
   mv teratree/* /code/
   cd /code/
   mkdir "teratree/settings/"
@@ -50,6 +50,7 @@ from djangosharedsettings.bucket import *
 
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 ALLOWED_HOSTS = [host.strip() for host in os.environ['ALLOWED_HOSTS'].split(',')]
+PREPEND_WWW = True
 EOF
   cat << EOF >> "teratree/urls.py"
 
@@ -120,9 +121,10 @@ EOF
 }
 EOF
   cat << EOF > "teratree/static/js/scripts.js"
-var elem = document.createElement('div');
-elem.innerHTML = 'JS working'
-document.body.appendChild(elem);
+// var elem = document.createElement('div');
+// elem.innerHTML = 'JS working';
+// document.body.appendChild(elem);
+console.log('JS working');
 EOF
   cat << EOF >> "teratree/test/test.py"
 import json
@@ -166,13 +168,13 @@ echo 'Fixing permissions on /code'
 chown -R `/usr/bin/whoami` /code
 echo 'done'
 pip freeze > /code/freeze.txt
-python manage.py collectstatic --noinput
+python3 manage.py collectstatic --noinput
 RETRIES=99
 until psql "$DATABASE_URL" -c "select 1" > /dev/null 2>&1 || [ $RETRIES -eq 0 ]; do
   echo "Waiting for postgres server, $((RETRIES--)) remaining attempts..."
   sleep 2
 done
-# python manage.py makemigrations
-# python manage.py migrate
+# python3 manage.py makemigrations
+# python3 manage.py migrate
 echo "Binding to $PORT"
-python manage.py runserver "0.0.0.0:$PORT"
+python3 manage.py runserver "0.0.0.0:$PORT"
