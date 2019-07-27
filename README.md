@@ -113,7 +113,9 @@ Load the viewer and enter the address `localhost:5900` while the `chrome` docker
 Make sure static files are up to date:
 
 ```
-manage.py collectstatic --noinput --link
+rm -r web/staticcache
+manage.py compilescss
+manage.py collectstatic --noinput --link | grep -v 'Found another file with the destination path'
 ```
 
 Set the deployment target to the Heroku app name:

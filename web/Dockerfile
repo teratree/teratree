@@ -1,11 +1,11 @@
 FROM alpine:3.10 as runbase
 RUN apk update
-RUN apk add --update python3 postgresql-client libpq jpeg zlib libffi
+RUN apk add --update python3 postgresql-client libpq jpeg zlib libffi libsass
 RUN pip3 install --upgrade pip
 
 FROM runbase as buildbase
 RUN apk update
-RUN apk add --update build-base postgresql-dev libffi-dev zlib-dev jpeg-dev python3-dev
+RUN apk add --update build-base postgresql-dev libffi-dev zlib-dev jpeg-dev python3-dev libsass-dev
 
 FROM buildbase as pipdownload
 ENV PYTHONUNBUFFERED 1

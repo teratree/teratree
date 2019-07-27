@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '9z7k44yalstvz9=jmax@u(104fqt$s(xm!3v8%&rdwlaw07v%y'
+SECRET_KEY = '7d*pa47a*#u+&=q7k-b@*ff_u(3gghn8z*g1f0ui!9q3_u-yxf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -30,33 +30,13 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-
 INSTALLED_APPS = [
-    'teratree.apps.TeraTreeConfig',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'wagtail.contrib.forms',
-    'wagtail.contrib.redirects',
-    'wagtail.embeds',
-    'wagtail.sites',
-    'wagtail.users',
-    'wagtail.snippets',
-    'wagtail.documents',
-    'wagtail.images',
-    'wagtail.search',
-    'wagtail.admin',
-    'wagtail.core',
-    'modelcluster',
-    'taggit',
-
-    'experiment',
-    'data',
-    'meeting',
-    'homepage',
 ]
 
 MIDDLEWARE = [
@@ -140,26 +120,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 ## Auto added by django-docker-template when the project was created
-from djangosharedsettings.db import *
-from djangosharedsettings.email import *
-from djangosharedsettings.logging import *
-from djangosharedsettings.static import *
-from djangosharedsettings.timezone import *
-
 ROOT_DIR = os.path.dirname(BASE_DIR)
-MIDDLEWARE.insert(MIDDLEWARE.index('django.middleware.security.SecurityMiddleware')+1, 'whitenoise.middleware.WhiteNoiseMiddleware')
-INSTALLED_APPS.insert(INSTALLED_APPS.index('django.contrib.auth'), 'storages')
-STATIC_ROOT = os.path.join(ROOT_DIR, 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-TEMPLATES[0]['DIRS'].append(os.path.join(ROOT_DIR, 'teratree', 'templates'))
-#TEMPLATES[0]['DIRS'].append(os.path.join(ROOT_DIR, 'homepage', 'templates'))
-INSTALLED_APPS += [
-]
-MIDDLEWARE += [
-'wagtail.core.middleware.SiteMiddleware',
-'wagtail.contrib.redirects.middleware.RedirectMiddleware',
-]
-WAGTAIL_SITE_NAME = 'Homepage'
-PERSON_MODEL = 'experiment.Person'
+
+## Customisations for teratree:
+for app in [
+  'experiment',
+  'meeting',
+  'homepage',
+]:
+    INSTALLED_APPS.append(app)
+

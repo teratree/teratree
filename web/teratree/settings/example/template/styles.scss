@@ -1,0 +1,217 @@
+$teratree-dark-grey: rgb(10,10,10);
+$teratree-light-grey: rgb(220,220,220);
+$teratree-white: rgb(255,255,255);
+$teratree-light-green: rgb(209,239,222);
+$teratree-green: rgb(102,181,142);
+$teratree-dark-green: rgb(29,64,46);
+$teratree-dark-blue: rgb(5,16,58);
+$teratree-dark-green-text: rgb(27,59,40);
+$teratree-orange: rgb(231,161,61);
+
+/* Action colors */
+$teratree-color-action-highlight-text: $teratree-white;
+$teratree-color-action-highlight-background: $teratree-orange;
+$teratree-color-action-primary-text: $teratree-light-green;
+$teratree-color-action-primary-background: $teratree-dark-green;
+$teratree-color-action-secondary-text: $teratree-dark-green;
+$teratree-color-action-secondary-background: $teratree-light-green;
+$teratree-color-input-text: $teratree-white;
+$teratree-color-input-background: $teratree-light-grey;
+
+/* Main block colors */
+$teratree-color-bounce-background: $teratree-light-grey;
+
+$teratree-color-topbar-background: $teratree-white;
+$teratree-color-topbar-text: $teratree-dark-grey;
+$teratree-color-topbar-link: $teratree-dark-blue;
+
+$teratree-color-backbar-background: $teratree-light-green;
+$teratree-color-backbar-text: $teratree-white;
+$teratree-color-backbar-link: $teratree-dark-blue;
+
+$teratree-color-messagebar-background: $teratree-dark-green;
+$teratree-color-messagebar-text: $teratree-light-green;;
+$teratree-color-messagebar-link: $teratree-dark-blue;
+
+$teratree-color-content-background: $teratree-white;
+$teratree-color-content-text: $teratree-dark-grey;
+$teratree-color-content-text-light: $teratree-light-grey;
+$teratree-color-content-link: $teratree-dark-blue;
+
+$teratree-color-footer-background: $teratree-white;
+$teratree-color-footer-text: $teratree-dark-grey;
+$teratree-color-footer-text-light: $teratree-light-grey;
+$teratree-color-footer-link: $teratree-dark-blue;
+
+$teratree-rhythm-internal: 14px;
+$teratree-rhythm-frame: 20px;
+
+/* Fonts */
+%bold {
+  font-family: "SemiBold";
+}
+%light {
+  font-family: "Light";
+}
+%large {
+  font-size: 24px;
+}
+%medium {
+  font-size: 18px;
+}
+%small {
+  font-size: 14px;
+}
+
+
+/* Buttons */
+%button {
+  @extend %bold;
+  @extend %medium;
+  outline: none;
+  border-radius: 0;
+  border: 0px;
+  padding: $teratree-rhythm-internal;
+  text-decoration: none;
+  cursor: pointer;
+  margin:0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: -webkit-center;
+  text-align: center;
+}
+
+/* Implementation */
+
+/* Reset */
+* {
+  box-sizing: border-box;
+}
+html, body, h1, h2, h3, h4, p, label {
+  padding: 0;
+  margin: 0;
+}
+input {
+  @extend %button;
+  text-align: left;
+  color: $teratree-color-input-text;
+  background: $teratree-color-input-background;
+}
+button {
+  @extend %button;
+  color: $teratree-color-action-primary-text;
+  background: $teratree-color-action-primary-background;
+}
+h1, h2, h3, h4, h5 {
+  @extends %bold;
+}
+a {
+  text-decoration: none;
+}
+
+/* Buttons */
+
+.teratree-button-primary,
+.teratree-content a.teratree-button-primary {
+  @extend %button;
+  color: $teratree-color-action-primary-text;
+  background: $teratree-color-action-primary-background;
+}
+.teratree-button-secondary,
+.teratree-content a.teratree-button-secondary {
+  @extend %button;
+  color: $teratree-color-action-secondary-text;
+  background: $teratree-color-action-secondary-background;
+}
+.teratree-button-highlight,
+.teratree-content a.teratree-button-highlight {
+  @extend %button;
+  color: $teratree-color-action-highlight-text;
+  background: $teratree-color-action-highlight-background;
+}
+
+
+@mixin color($background, $text, $link) {
+  background-color: $background;
+  html, body, h1, h2, h3, h4, p, label {
+    color: $text;
+  }
+  a {
+    color: $link
+  }
+}
+
+/* Content colors */
+.content.teratree-blue {
+  background-color: rgb(208,240,248);
+}
+
+/* Layout */
+.teratree-frame {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+    .teratree-topbar {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: no;
+      min-height: 64px;
+      @include color($teratree-color-topbar-background, $teratree-color-topbar-text, $teratree-color-topbar-link);
+    }
+        .teratree-logo {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+        .teratree-user {
+          @extends large;
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+    .teratree-backbar {
+      display: flex;
+      flex-direction: row;
+      flex-shrink: no;
+      @extends bold;
+      @extends large;
+      padding: 15px;
+      padding-left: 60px;
+      @include color($teratree-color-backbar-background, $teratree-color-backbar-text, $teratree-color-backbar-link);
+    }
+    .teratree-messagebar {
+      display: flex;
+      flex-direction: row;
+      flex-shrink: no;
+      justify-content: left;
+      align-items: center;
+
+      @extend %bold;
+      @extend %medium;
+
+      padding-left: 129px;
+      @include color($teratree-color-messagebar-background, $teratree-color-messagebar-text, $teratree-color-messagebar-link);
+      min-height: 150px;
+    }
+    .teratree-content {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: no;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+      @include color($teratree-color-content-background, $teratree-color-content-text, $teratree-color-content-link);
+    }
+    .teratree-footer {
+      @extends small;
+      display: flex;
+      flex-direction: row;
+      flex-shrink: no;
+      min-height: 70px;
+      justify-content: center;
+      align-items: center;
+      @include color($teratree-color-footer-background, $teratree-color-footer-text, $teratree-color-footer-link);
+    }

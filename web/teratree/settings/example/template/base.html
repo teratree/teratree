@@ -15,7 +15,7 @@
     <div class="teratree-frame">
       <div class="teratree-topbar">
         <div class="teratree-logo">
-          <a href="/">TeraTree</a>
+          <a href="/"><img src="{% static 'images/logo.svg' %}" alt="teratree"/></a>
         </div>
         <div class="teratree-user">
           {% include "user.html" %}
@@ -23,7 +23,7 @@
       </div>
       {% block back_bar %}
         <div class="teratree-backbar">
-          <span><a href="javascript:history.back()">{% block back_bar_text %}Back{% endblock %}</a></span>
+          <span>{% block back_bar_text %}Back to Profile</span>{% endblock %}
         </div>
       {% endblock %}
       {% if messages %}

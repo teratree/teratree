@@ -2,7 +2,8 @@
 *.sw[op]
 .DS_Store
 __pycache__
-db
-docker-compose.yml
-web/freeze.txt
-web/media
+/db
+/docker-compose.yml
+/web/freeze.txt
+/web/media
+/git/ssh/*
