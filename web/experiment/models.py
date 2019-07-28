@@ -4,6 +4,15 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+
+
+from wagtail.core.models import Page
+from wagtail.core.fields import StreamField
+from wagtail.core import blocks
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.admin.edit_handlers import StreamFieldPanel
+
+
 MAX_LENGTH=254
 
 
@@ -22,12 +31,13 @@ IMPORTANCE_CHOICES = [
     (HIGH, 'High'),
 ]
 
+
 class Experiment(models.Model):
     poster = models.ForeignKey('Person', on_delete=models.PROTECT, related_name='posted_experiments', null=True, blank=True)
     posted = models.DateTimeField(default=timezone.now)
 
     hypothesis = models.TextField(blank=True, default='')
-    experiment = models.TextField(blank=True, default='')
+    method = models.TextField(blank=True, default='')
     measurement = models.TextField(blank=True, default='')
 
     importance = models.CharField(max_length=6, choices=IMPORTANCE_CHOICES, default=NA)
@@ -44,6 +54,7 @@ class Experiment(models.Model):
 
     def __str__(self):
         return f'Experiment {self.hypothesis}'
+
 
 class ExperimentComment(models.Model):
     experiment = models.ForeignKey('Experiment', on_delete=models.CASCADE)

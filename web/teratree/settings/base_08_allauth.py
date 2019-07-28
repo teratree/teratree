@@ -280,6 +280,7 @@ ACCOUNT_PRESERVE_USERNAME_CASING = False
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 if not DEBUG:
     ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+# Is this working? Doesn't seem to be, and it seems to give a CSRF error if you try after it has failed.
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 ACCOUNT_SESSION_REMEMBER = False

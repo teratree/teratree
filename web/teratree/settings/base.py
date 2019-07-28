@@ -129,4 +129,3 @@ for app in [
   'homepage',
 ]:
     INSTALLED_APPS.append(app)
-

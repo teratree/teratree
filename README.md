@@ -71,6 +71,21 @@ psql -h db -U postgres postgres
 
 (You will need to run `psql -h db -U postgres postgres -c 'DELETE FROM wagtailcore_site CASCADE; DELETE FROM wagtailcore_grouppagepermission CASCADE; DELETE FROM wagtailcore_page CASCADE;'` first if you are loading an entire dataset from a freshly migrated database since wagtail adds some data you need to remove first)
 
+That means to import from a dump you run:
+
+```
+alias psql='docker-compose -f `pwd`/docker-compose.yml run --rm web psql'
+alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python3 manage.py'
+alias aws='docker-compose -f `pwd`/docker-compose.yml run --rm aws'
+manage.py migrate
+psql -h db -U postgres postgres -c 'DELETE FROM wagtailcore_site CASCADE; DELETE FROM wagtailcore_grouppagepermission CASCADE; DELETE FROM wagtailcore_page CASCADE;'
+manage.py loaddata /code/dump-live.json
+# The /media directory in the container is mounted to ./web/media
+aws s3 sync s3://teratree-media /media
+```
+
+NOTE: You have to be running *exactly* the same schemas on a completely empty database for a dump and load to work.
+
 In development remember to clear your browser cache once you've changed static files and run `manage.py collectstatic` by restarting the Docker container. Otherwise the browser will use the cached old version.
 
 ### DB
