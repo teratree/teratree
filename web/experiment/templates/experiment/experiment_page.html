@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load wagtailuserbar %}
+{% block body_class %}template-homepage{% endblock %}
+{% block back_bar %}{% endblock %}
+
+{% block content %}
+  {% wagtailuserbar %}
+  <h1>{{self.title}}</h1>
+  {% with stream_field=page.hypothesis %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
+  {% with stream_field=page.method %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
+  {% with stream_field=page.measurement %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
+  {% with stream_field=page.observation %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
+  {% with stream_field=page.learning %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
+  {% with stream_field=page.action %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
+{% endblock %}

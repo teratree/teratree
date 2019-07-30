@@ -127,5 +127,6 @@ for app in [
   'experiment',
   'meeting',
   'homepage',
+  'blog',
 ]:
     INSTALLED_APPS.append(app)

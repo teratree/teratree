@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% load tz %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+    <h1 class="heading">{{ page.title }}</h1>
+
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+    <p class="date">{{ page.date }}</p>
+
+
+
+            {% for block in page.body %}
+                {% if block.block_type == 'heading' %}
+                    <h1 class="heading">{{ block.value }}</h1>
+                {% elif block.block_type == 'image' %}
+                    <section class="block-{{ block.block_type }}">
+                        <p class="img"><a href="{{ block.value.file.url }}">{% image block.value max-1180x1180 %}</a></p>
+                    </section>
+                {% elif block.block_type == 'paragraph' %}
+                    <p class="block-{{ block.block_type }}">
+                        {{ block.value }}
+                    </p>
+                {% else %}
+                    <section class="block-{{ block.block_type }}">
+                        {% include_block block %}
+                    </section>
+                {% endif %}
+            {% endfor %}
+
+
+    <nav class="named-sibling">
+      <ul>
+        {% if page.get_prev_siblings.live.first %}
+        <li class="next">
+          <a href="{% pageurl page.get_prev_siblings.live.first %}">←&nbsp;{{ page.get_prev_siblings.live.first.title }}&nbsp;(older)</a>
+        </li>
+        {% endif %}
+        {% if page.get_next_siblings.live.last %}
+        <li class="prev">
+          <a href="{% pageurl page.get_next_siblings.live.last %}">(more recent)&nbsp;{{ page.get_next_siblings.live.last.title }}&nbsp;→</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+
+
+    <h2>Comments</h2>
+    {% if page.comments.all %}
+      <p>
+    {% for item in page.comments.all %}
+        <strong>{{ item.author }}</strong> - {{ item.date | timezone:"Europe/London"}}<br>
+        {{ item.comment }}<br>
+        <br>
+    {% endfor %}
+      </p>
+    {% else %}
+    <p>Be the first to add a comment.</p>
+    {% endif %}
+
+    <h2>Add a Comment</h2>
+    <form method="post" action="." id="comment-new">
+      {% csrf_token %}
+      {{ form.author }}<br>
+      {{ form.comment }}<br>
+      <button type="submit" class="save btn btn-default">Submit</button>
+    </form>
+
+
+{% endblock %}

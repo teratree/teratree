@@ -127,6 +127,7 @@ WAGTAIL_SITE_NAME = 'teratree'
 for app in [
     'wagtail.contrib.modeladmin',  # Don't repeat if it's there already
     'wagtailmenus',
+    'wagtailautocomplete',
 ]:
     INSTALLED_APPS.append(app)
 

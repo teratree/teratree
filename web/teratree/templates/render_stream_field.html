@@ -1,0 +1,11 @@
+{% load wagtailcore_tags %}
+
+{% for block in stream_field %}
+  {% if block.block_type == 'heading' %}
+    <h1>{{ block.value }}</h1>
+  {% else %}
+    <div class="block-{{ block.block_type }}">
+      {% include_block block %}
+    </div>
+  {% endif %}
+{% endfor %}

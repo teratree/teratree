@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load wagtailuserbar %}
+{% load wagtailcore_tags %}
+{% block body_class %}template-homepage{% endblock %}
+{% block back_bar %}
+
+<div class="teratree-backbar">
+  {% with stream_field=page.body %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
+</div>
+{% endblock %}
+
+{% block content %}
+  {% wagtailuserbar %}
+{% endblock %}

@@ -22,10 +22,13 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.core import urls as wagtail_urls
 
 from django.views.generic.base import RedirectView
+from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
+
 
 
 app_name = 'teratree'
 urlpatterns = [
+    path('admin/autocomplete/', include(autocomplete_admin_urls)),
     # Instead, follow this pattern
     path('meeting/', include('meeting.urls')),
     path('data/', include('data.urls')),

@@ -1,5 +1,6 @@
 wagtail
 wagtailmenus
+wagtail-autocomplete
 django-allauth
 django-compressor
 django-sass-processor
