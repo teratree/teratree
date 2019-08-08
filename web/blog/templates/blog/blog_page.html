@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-{% load tz %}
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
 
@@ -57,27 +56,6 @@
       </ul>
     </nav>
 
-
-    <h2>Comments</h2>
-    {% if page.comments.all %}
-      <p>
-    {% for item in page.comments.all %}
-        <strong>{{ item.author }}</strong> - {{ item.date | timezone:"Europe/London"}}<br>
-        {{ item.comment }}<br>
-        <br>
-    {% endfor %}
-      </p>
-    {% else %}
-    <p>Be the first to add a comment.</p>
-    {% endif %}
-
-    <h2>Add a Comment</h2>
-    <form method="post" action="." id="comment-new">
-      {% csrf_token %}
-      {{ form.author }}<br>
-      {{ form.comment }}<br>
-      <button type="submit" class="save btn btn-default">Submit</button>
-    </form>
-
+    {% include 'blog/comments.html' %}
 
 {% endblock %}

@@ -1,54 +1,313 @@
 {% load static %}
 {% load menu_tags %}
-{% load sass_tags %}
 {% load wagtailcore_tags %}
+{% load wagtailuserbar %}
 <!DOCTYPE html>
 <html class="no-js" lang="en">
   <head>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8" />
     <title>{% block title %}{% if self.title %}{{ self.title }}{% endif %}{% endblock %}</title>
     <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="{% sass_src 'css/styles.scss' %}" rel="stylesheet" type="text/css" />
-    {% block extra_css %}{# Override this in templates to add extra stylesheets #}{% endblock %}
     <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
-  </head>
-  <body>
-    <div class="teratree-frame">
-      <div class="teratree-topbar">
-        <div class="teratree-logo">
-          <a href="/" style="font-size: 24px; font-weight: bold; text-decoration: none">teraTree</a>
-        </div>
-        <div class="teratree-user" style="flex-direction: row; justify-content: end;">
-          {% main_menu template="main_menu.html" %}
-          {% include "user.html" %}
-        </div>
-      </div>
-      {% if messages %}
-      <div class="teratree-messagebar">
-        {% for message in messages %}
-          <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
-        {% endfor %}
-      </div>
-      {% endif %}
-      {% block back_bar %}
-        <div class="teratree-backbar">
-          <span><a href="javascript:history.back()">{% block back_bar_text %}Back{% endblock %}</a></span>
-        </div>
-      {% endblock %}
-      <div class="teratree-content {% block content_background_class %}{% endblock %}">
-        {% block content %}{% endblock %}
-      </div>
-      <div class="teratree-footer teratree-small" style="flex-direction: column; justify-content: center; align-items: center; align-self: stretch; padding-left: 20px; padding-right: 20px;">
-        <div style="width: 100%">
-          <p style="text-align: center">&copy; teraTree 2019 All Rights Reserved. teraTree is a trademark and trading name of James Gardner.<br>See our <a href="/legal/terms-and-conditions">Terms and Conditions</a> and <a href="/legal/privacy-policy/">Privacy Policy</a>.</p>
-        </div>
-        <div style="width: 100%; padding-top:20px; padding-bottom: 20px;">
-          <p><a href="https://twitter.com/teratreeorg"><i class="fab fa-twitter" style="font-size: 32px;"></i></a></p>
-        </div>
-      </div>
+<!-- https://css-tricks.com/snippets/css/a-guide-to-flexbox/ -->
+<style>
+body {
+  background: lightgrey;
+}
+/* Minimal reset */
+body {
+  padding: 0;
+  margin: 0;
+}
+
+/* Main Layout */
+.wrapper {
+  display: flex;  
+  /* Make each child wrap, rather than fit in */
+  flex-flow: row wrap;
+}
+.wrapper > * {
+  padding: 1rem;
+  /* Mobile first, each item fills the width with a flex-basis of 100% meaning the header, main and footer all try to be 100% */
+  flex-basis: 100%;
+}
+
+/* on small screens, put the asides side by side */
+@media all and (min-width: 576px) {
+  /* Give the asides an equal flex of 1 between 576px and 992px while everything else is still 100% width */
+  .aside { flex: 1 0 0; }
+}
+/* On large screens, put the asides next to the main content, and set the order */
+@media all and (min-width: 1112px) {
+  .main    { flex: 3 0px; }
+  .aside-1 { order: 1; } 
+  .main    { order: 2; }
+  .aside-2 { order: 3; }
+  .footer  { order: 4; }
+}
+
+
+/* Navigation */
+
+.topnav {
+  padding: 1rem;
+  padding-right: 4rem;
+  padding-left: 2rem;
+  padding-top: 3rem;
+  height: 100vh;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: -100%;
+  background-color: rgb(29,64,46);
+  color: white;
+  overflow-x: hidden; 
+  transition: 0.5s;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Position and style the close button (top right corner) */
+.closebtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.openbtn, .closebtn {
+  display: block;
+  cursor: pointer;
+}
+.topnav a {
+  display: block;
+}
+.navwrapper { display: flex; order: 1; align-items: center;}
+.logo { display: flex; order: 2; align-items: center;}
+.search { display: flex; order: 3; align-items: center;}
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media all and (min-width: 576px) {
+  .topnav {
+    /* Reset all these back to the browser defaults */
+    position: static;
+    padding: 0;
+    width: auto;
+    z-index: auto;
+    top: auto;
+    left: auto;
+    height: auto;
+    background-color: transparent;
+    max-width: none;
+    flex-direction: row;
+    display: flex;
+    overflow-x: visible;
+    transition: none;
+    align-items: center;
+  }
+  /* Hide the buttons and elements we don't need */
+  .openbtn, .closebtn, .search {
+    display: none;
+  }
+  /* Style the links inside the navigation bar */
+  .topnav a {
+    float: left;
+    margin-right: 1rem;
+  }
+  .topnav a:last-child { margin-right: 0rem; }
+  /* Set the correct order */
+  .logo { order: 1; }
+  .navwrapper { justify-content: flex-end; order: 2; }
+  .search { order: 3; }
+}
+
+
+/* Main boxes */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  padding: 1rem;
+  /*
+  flex-flow: row wrap;
+  display: flex;
+  */
+}
+/*
+.box {
+  display: flex;
+  padding: 1rem;
+  flex-basis: calc(100% - 2em);
+  background: purple;
+}
+*/
+
+@media all and (min-width: 576px) {
+  .main {
+  }
+  /*
+  .box {
+    padding: 1rem;
+    flex-basis: calc(25% - 2em);
+  }
+  */
+}
+
+/*
+ font-size: 24px; font-weight: bold; text-decoration: none"
+*/
+
+
+/* Styles */
+
+@font-face {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  src: url({% static 'fonts/OpenSans-Regular.ttf' %});
+}
+@font-face {
+  font-family: 'Raleway';
+  font-weight: 600;
+  src: url({% static 'fonts/Raleway-SemiBold.ttf' %});
+}
+@font-face {
+  font-family: 'Raleway';
+  font-weight: 400;
+  src: url({% static 'fonts/Raleway-Regular.ttf' %});
+}
+body, input, textarea, label, p, span, div {
+  font-family: 'Raleway', sans-serif;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.openbtn, .closebtn, .header a, .header a:link, .header a:visited {
+  color: white;
+  text-decoration: none;
+}
+.openbtn {
+  font-size: 1.2rem;
+}
+.header a:hover {
+  text-decoration: underline;
+}
+.footer {
+  font-size: 0.8rem;
+  background: lightgreen;
+}
+.main {
+  /*text-align: left;*/
+  background: white; /*background: deepskyblue*/
+}
+.aside-1 {
+  background: white;
+  /*background: gold;*/
+}
+.aside-2 {
+  background: white;
+  /*background: hotpink;*/
+}
+.header {
+  background: #037971;
+}
+.backbar {
+  background: #D1DC47 url("{% static 'homepage/images/contours.png' %}");
+}
+.main a {
+  color: #037971;
+}
+input, textarea, button {
+  font-size: 1rem;
+  outline: none;
+  border-radius: 0;
+  border: 0;
+  padding: 1rem;
+  text-decoration: none;
+  color: rgb(70,70,70);
+  font-weight: normal;
+  background: #eee;
+}
+button, input[type=submit] {
+  background: rgb(29,64,46);
+  color: #eee;
+}
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+.footer a {
+  color: rgb(4, 49, 56);
+}
+</style>
+
+<script>
+function openNav() {
+  document.getElementById("topnav").style.left = "0px";
+}
+
+function closeNav() {
+  document.getElementById("topnav").style.left = "-100%";
+}
+</script>
+    {% block extra_css %}{# Override this in templates to add extra stylesheets #}{% endblock %}
+</head>
+<body>
+<div class="wrapper">
+  <header class="header">
+    <div class="logo">
+      <a href="/">teraTree</a>
     </div>
-    <script type="text/javascript" src="{% static 'js/scripts.js' %}"></script>
-    {% block extra_js %}{% endblock %}
+    <div class="navwrapper">
+      <nav id="topnav" class="topnav">
+        <span class="closebtn" onclick="closeNav()">&#10005;</span>
+        {% main_menu template="main_menu.html" %}
+        {% include "user.html" %}
+      </nav>
+      <span class="openbtn" id="open" onclick="openNav()">&#9776;</span>
+    </div>
+    <div class="search"><span style="width: 1rem"></span></div> 
+  </header>
+  {% if messages %}
+  <div class="messagebar">
+    {% for message in messages %}
+      <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% block back_bar %}
+    <div class="backbar">
+      <span><a href="javascript:history.back()">{% block back_bar_text %}Back{% endblock %}</a></span>
+    </div>
+  {% endblock %}
+  <article class="main {% block content_background_class %}{% endblock %}">
+    {% block content %}{% endblock %}
+  </article>
+  {% block aside1 %}
+  <aside class="aside aside-1"></aside>
+  {% endblock %}
+  {% block aside2 %}
+  <aside class="aside aside-2"></aside>
+  {% endblock %}
+  <footer class="footer">
+    {% include 'mailchimp.html' %}
+    <!-- teraTree is a trademark and trading name of James Gardner -->
+    <p style="padding-bottom: 0; margin-bottom: 0">&copy; <a href="{% slugurl 'legal' %}">teraTree</a> 2019 All Rights Reserved.</p><p style="padding-top: 0.4rem; margin-top: 0">See our <a href="{% slugurl 'terms-and-conditions' %}">Terms and Conditions</a> and <a href="{% slugurl 'privacy-policy' %}">Privacy Policy</a>.</p>
+    <p><a href="https://twitter.com/teratreeorg"><i class="fab fa-twitter" style="font-size: 32px;"></i></a></p>
+  </footer>
+</div>
+<script type="text/javascript" src="{% static 'js/scripts.js' %}"></script>
+{% block extra_js %}{% endblock %}
+{% wagtailuserbar %}
   </body>
 </html>

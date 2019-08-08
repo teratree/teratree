@@ -30,7 +30,7 @@ app_name = 'teratree'
 urlpatterns = [
     path('admin/autocomplete/', include(autocomplete_admin_urls)),
     # Instead, follow this pattern
-    path('meeting/', include('meeting.urls')),
+    path('experience/', include('experience.urls')),
     path('data/', include('data.urls')),
     path('experiment/', include('experiment.urls')),
     # This is how wagtail recommends it is done, don't copy this

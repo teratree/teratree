@@ -125,8 +125,11 @@ ROOT_DIR = os.path.dirname(BASE_DIR)
 ## Customisations for teratree:
 for app in [
   'experiment',
-  'meeting',
+  'experience',
   'homepage',
   'blog',
+  'teratree',
+  'data',
 ]:
     INSTALLED_APPS.append(app)
+PERSON_MODEL = 'experiment.Person'

@@ -6,5 +6,5 @@ from .models import Questions00001
 #
 @admin.register(Questions00001)
 class Questions00001Admin(admin.ModelAdmin):
-    list_display = ('respondant', 'posted', 'location', 'cczero')
+    list_display = ('first_name', 'last_name', 'email', 'posted', 'location', 'cczero')
     list_filter = ('cczero',)

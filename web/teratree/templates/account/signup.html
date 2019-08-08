@@ -1,6 +1,8 @@
 {% extends "account/base.html" %}
 
+{% load wagtailcore_tags %}
 {% load i18n %}
+{% load account socialaccount %}
 
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
@@ -9,13 +11,37 @@
 
 <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
+
+{% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+<div class="socialaccount_ballot">
+
+  <ul class="socialaccount_providers">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+  <div class="login-or">{% trans 'or' %}</div>
+</div>
+{% include "socialaccount/snippets/login_extra.html" %}
+{% endif %}
+
+
+{% include "form-errors.html" %}
+
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
-  {{ form.as_p }}
+  {{ form.first_name }}<br>
+  {{ form.last_name }}<br>
+  {{ form.email }}<br>
+  {{ form.password1 }}<br>
+  <br>
+  {{ form.agree_to_website_terms }} I agree to the <a href="{% slugurl 'terms-and-conditions' %}">Terms and Conditions</a><br>
+  {{ form.opt_in_to_newsletter }} Please sign me up to the newsletter<br>
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
+  <br>
+  <button type="submit">{% trans "Sign Up" %}</button>
 </form>
 
 {% endblock %}

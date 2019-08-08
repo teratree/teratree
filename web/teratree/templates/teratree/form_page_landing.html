@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block body_class %}template-homepage{% endblock %}
+{% block back_bar %}{% endblock %}
+{% block aside1 %}{% endblock %}
+{% block aside2 %}{% endblock %}
+
+{% block content %}
+  {{ page.thank_you_text|richtext }}
+{% endblock %}

@@ -3,11 +3,12 @@ import pytz
 
 from django.conf import settings
 from django.utils.timezone import now
+from django.utils import timezone
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.search import index
-
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
@@ -15,7 +16,6 @@ class BlogIndexPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('intro', classname="full")
     ]
-
 
     def get_context(self, request):
         # Update context to include only published posts, ordered by reverse-chron
@@ -43,6 +43,36 @@ from django.shortcuts import render, redirect
 
 from django.contrib import messages
 
+class CommentsMixIn:
+    def add_comments_and_return(self, request, CommentForm):
+        if request.method == 'POST':
+            form = CommentForm(request.user.is_authenticated, request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.date = now().astimezone(pytz.UTC)
+                comment.sort_order = self.comments.all().count()
+                if request.user.is_authenticated:
+                    comment.user = request.user
+                self.comments.add(comment)
+                comment.save()
+                messages.success(request, 'Commented added successfully.')
+                return redirect(self.url)
+        else:
+            form = CommentForm(request.user.is_authenticated)
+
+        return render(request, self.template, {
+            'page': self,
+            'self': self,
+            'form': form,
+            'request': request,
+        })
+
+
+
+
+from django.db import models
+
+# New imports added for ParentalKey, Orderable, InlinePanel, ImageChooserPanel
 class BlogPage(Page):
     date = models.DateField("Post date")
     time = models.TimeField("Post time")
@@ -74,40 +104,8 @@ class BlogPage(Page):
 
     def serve(self, request):    
         from .forms import CommentForm
+        return self.add_comments_and_return(request, CommentForm)
 
-        # print(request.is_secure(), request.headers, request.COOKIES)
-        # for name in dir(settings):
-        #     print(name, getattr(settings, name))
-
-        if request.method == 'POST':
-            form = CommentForm(request.POST)
-            if form.is_valid():
-                comment = form.save(commit=False)
-                comment.date = now().astimezone(pytz.UTC)
-                comment.sort_order = self.comments.all().count()
-                self.comments.add(comment)
-                comment.save()
-                messages.success(request, 'Commented added successfully.')
-                return redirect(self.url)
-        else:
-            form = CommentForm()
-
-        return render(request, self.template, {
-            'page': self,
-            'self': self,
-            'form': form,
-            'request': request,
-        })
-
-
-
-
-
-
-
-from django.db import models
-
-# New imports added for ParentalKey, Orderable, InlinePanel, ImageChooserPanel
 
 from modelcluster.fields import ParentalKey
 
@@ -118,15 +116,23 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 
 
+from django.db import models
+from django.conf import settings
+
+
 
 class BlogPageComment(Orderable):
     page = ParentalKey(BlogPage, on_delete=models.CASCADE, related_name='comments')
-    date = models.DateTimeField("Post date")
-    author = models.CharField(blank=True, max_length=250)
-    comment = models.CharField(blank=True, max_length=1250)
+    posted = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='blog_page_comments')
+    name = models.CharField(blank=True, max_length=250)
+    email = models.EmailField(blank=True, max_length=250)
+    comment = models.TextField(blank=True, max_length=1250)
 
     panels = [
-        FieldPanel('date'),
-        FieldPanel('author'),
+        FieldPanel('name'),
+        FieldPanel('email'),
+        AutocompletePanel('user', target_model=settings.AUTH_USER_MODEL),
+        FieldPanel('posted'),
         FieldPanel('comment'),
     ]

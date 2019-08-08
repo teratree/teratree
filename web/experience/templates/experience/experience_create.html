@@ -1,0 +1,959 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="/static/wagtailadmin/js/vendor/modernizr-2.6.2.min.js"></script>
+
+    <link rel="stylesheet" href="/static/wagtailadmin/css/normalize.css" />
+
+    
+    <link rel="stylesheet" href="/static/wagtailadmin/css/vendor/jquery-ui/jquery-ui-1.10.3.verdant.css" />
+    <link rel="stylesheet" href="/static/wagtailadmin/css/vendor/jquery.tagit.css">
+    <link rel="stylesheet" href="/static/wagtailadmin/css/core.css" type="text/css" />
+    
+
+    
+    
+    
+
+
+
+<link rel="stylesheet" href="/static/wagtailadmin/css/layouts/page-editor.css" />
+
+<link rel="stylesheet" type="text/css" href="/static/wagtailautocomplete/dist.css" />
+
+    <link href="/static/wagtailadmin/css/panels/draftail.css" type="text/css" media="all" rel="stylesheet">
+    
+
+
+
+    
+    <link rel="shortcut icon" href="/static/wagtailadmin/images/favicon.ico" />
+
+    
+    <script>
+        (function(document, window) {
+            window.wagtailConfig = window.wagtailConfig || {};
+            wagtailConfig.ADMIN_API = {
+                PAGES: '/cms/api/v2beta/pages/',
+                DOCUMENTS: '/cms/api/v2beta/documents/',
+                IMAGES: '/cms/api/v2beta/images/',
+                
+                
+                EXTRA_CHILDREN_PARAMETERS: '',
+            };
+
+            wagtailConfig.STRINGS = {
+                EDIT: "Edit",
+                DELETE: "Delete",
+                PAGE: "Page",
+                PAGES: "Pages",
+                LOADING: "Loading…",
+                NO_RESULTS: "No results",
+                SERVER_ERROR: "Server Error",
+                SEE_CHILDREN: "See children",
+                SEE_ALL: "See all",
+                CLOSE_EXPLORER: "Close explorer",
+                ALT_TEXT: "Alt text",
+                WRITE_HERE: "Write here…",
+                HORIZONTAL_LINE: "Horizontal line",
+                LINE_BREAK: "Line break",
+                UNDO: "Undo",
+                REDO: "Redo",
+                RELOAD_PAGE: "Reload the page",
+                RELOAD_EDITOR: "Reload saved content",
+                SHOW_LATEST_CONTENT: "Show latest content",
+                SHOW_ERROR: "Show error",
+                EDITOR_CRASH: "The editor just crashed. Content has been reset to the last saved version.",
+                BROKEN_LINK: "Broken link",
+                MISSING_DOCUMENT: "Missing document"
+            };
+
+            wagtailConfig.ADMIN_URLS = {
+                PAGES: '/cms/pages/'
+            };
+        })(document, window);
+    </script>
+    <script src="/static/wagtailadmin/js/vendor/jquery-3.2.1.min.js"></script>
+    <script src="/static/wagtailadmin/js/vendor/jquery-ui-1.12.1.min.js"></script>
+    <script src="/static/wagtailadmin/js/vendor/jquery.datetimepicker.js"></script>
+    <script src="/static/wagtailadmin/js/vendor/jquery.autosize.js"></script>
+    <script src="/static/wagtailadmin/js/vendor/bootstrap-transition.js"></script>
+    <script src="/static/wagtailadmin/js/vendor/bootstrap-modal.js"></script>
+    <script src="/static/wagtailadmin/js/vendor/bootstrap-tab.js"></script>
+    <script src="/static/wagtailadmin/js/vendor/tag-it.js"></script>
+    <script src="/static/wagtailadmin/js/core.js"></script>
+    <script src="/static/wagtailadmin/js/vendor.js"></script>
+    <script src="/static/wagtailadmin/js/wagtailadmin.js"></script>
+    
+
+
+
+    <script type="text/javascript" src="/static/wagtailadmin/js/submenu.js"></script>
+
+    
+    
+    
+
+
+
+
+<script>
+    window.chooserUrls = {
+        'pageChooser': '/cms/choose-page/',
+        'externalLinkChooser': '/cms/choose-external-link/',
+        'emailLinkChooser': '/cms/choose-email-link/'
+    };
+    window.unicodeSlugsEnabled = true;
+</script>
+
+<script src="/static/wagtailadmin/js/vendor/rangy-core.js"></script>
+<script src="/static/wagtailadmin/js/vendor/mousetrap.min.js"></script>
+<script src="/static/wagtailadmin/js/expanding_formset.js"></script>
+<script src="/static/wagtailadmin/js/modal-workflow.js"></script>
+<script src="/static/wagtailadmin/js/page-editor.js"></script>
+<script src="/static/wagtailadmin/js/vendor/xregexp.min.js"></script>
+<script src="/static/wagtailadmin/js/vendor/urlify.js"></script>
+<script src="/static/wagtailadmin/js/privacy-switch.js"></script>
+<script src="/static/wagtailadmin/js/vendor/bootstrap-tooltip.js"></script>
+
+
+            <script>
+                window.chooserUrls.embedsChooser = '/cms/embeds/chooser/';
+            </script>
+        
+            <script>window.chooserUrls.snippetChooser = '/cms/snippets/choose/';</script>
+        
+        <script>
+            window.chooserUrls.documentChooser = '/cms/documents/chooser/';
+        </script>
+        
+        <script>
+            window.chooserUrls.imageChooser = '/cms/images/chooser/';
+        </script>
+        <script type="text/javascript" src="/static/wagtailautocomplete/dist.js"></script>
+
+
+
+<script>
+    $.fn.datetimepicker.defaults.i18n.wagtail_custom_locale = {
+        months: [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ],
+        dayOfWeek: [
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday'
+        ],
+        dayOfWeekShort: [
+            'Sun',
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+            'Sat'
+        ],
+    }
+    $.datetimepicker.setLocale('wagtail_custom_locale');
+</script>
+
+
+
+    
+    <script type="text/javascript" src="/static/wagtailadmin/js/blocks/sequence.js"></script>
+<script type="text/javascript" src="/static/wagtailadmin/js/draftail.js"></script>
+<script type="text/javascript" src="/static/wagtailembeds/js/embed-chooser-modal.js"></script>
+<script type="text/javascript" src="/static/wagtailadmin/js/page-chooser-modal.js"></script>
+<script type="text/javascript" src="/static/wagtaildocs/js/document-chooser-modal.js"></script>
+<script type="text/javascript" src="/static/wagtailimages/js/image-chooser-modal.js"></script>
+<script type="text/javascript" src="/static/wagtailadmin/js/blocks/stream.js"></script>
+<script type="text/javascript" src="/static/wagtailimages/js/image-chooser.js"></script>
+<script type="text/javascript" src="/static/wagtaildocs/js/document-chooser.js"></script>
+    
+
+    
+    <script type="text/template" id="blockdef-34-newmember-heading">
+<li id="__PREFIX__-container" class="sequence-member">
+    <input type="hidden" id="__PREFIX__-deleted" name="__PREFIX__-deleted" value="">
+    <input type="hidden" id="__PREFIX__-order" name="__PREFIX__-order" value="">
+    
+    
+    <input type="hidden" id="__PREFIX__-type" name="__PREFIX__-type" value="heading">
+    <input type="hidden" id="__PREFIX__-id" name="__PREFIX__-id" value="">
+
+
+    
+    <div class="sequence-controls">
+        <h3><label for="__PREFIX__-value">Heading</label></h3>
+        <div class="button-group button-group-square">
+            <button type="button" id="__PREFIX__-moveup" title="Move up" class="button icon text-replace icon-order-up">Move up</button>
+            <button type="button" id="__PREFIX__-movedown" title="Move down" class="button icon text-replace icon-order-down">Move down</button>
+            <button type="button" id="__PREFIX__-delete" title="Delete" class="button icon text-replace hover-no icon-bin">Delete</button>
+        </div>
+    </div>
+
+
+    <div class="sequence-member-inner ">
+<div class="field char_field widget-text_input fieldname-heading full title">
+    <div class="field-content">
+        <div class="input">
+            <input type="text" name="__PREFIX__-value" id="__PREFIX__-value" placeholder="Heading">
+
+            
+            <span></span>
+        </div>
+        
+
+        
+    </div>
+</div></div>
+
+    
+    <div class="stream-menu stream-menu-closed" id="__PREFIX__-appendmenu">
+    <a href="#" class="toggle"><span>Insert block</span></a>
+    <div class="stream-menu-inner">
+        
+        
+            
+            <ul>
+                
+                    <li><button type="button" class="button action-add-block-heading icon icon-placeholder"><span>Heading</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-paragraph icon icon-doc-full"><span>Paragraph</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-image icon icon-image"><span>Image</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-document icon icon-doc-empty"><span>Document</span></button></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+
+</li>
+</script>
+<script type="text/template" id="blockdef-34-newmember-paragraph">
+<li id="__PREFIX__-container" class="sequence-member">
+    <input type="hidden" id="__PREFIX__-deleted" name="__PREFIX__-deleted" value="">
+    <input type="hidden" id="__PREFIX__-order" name="__PREFIX__-order" value="">
+    
+    
+    <input type="hidden" id="__PREFIX__-type" name="__PREFIX__-type" value="paragraph">
+    <input type="hidden" id="__PREFIX__-id" name="__PREFIX__-id" value="">
+
+
+    
+    <div class="sequence-controls">
+        <h3><label for="__PREFIX__-value">Paragraph</label></h3>
+        <div class="button-group button-group-square">
+            <button type="button" id="__PREFIX__-moveup" title="Move up" class="button icon text-replace icon-order-up">Move up</button>
+            <button type="button" id="__PREFIX__-movedown" title="Move down" class="button icon text-replace icon-order-down">Move down</button>
+            <button type="button" id="__PREFIX__-delete" title="Delete" class="button icon text-replace hover-no icon-bin">Delete</button>
+        </div>
+    </div>
+
+
+    <div class="sequence-member-inner ">
+<div class="field char_field widget-draftail_rich_text_area fieldname-paragraph">
+    <div class="field-content">
+        <div class="input">
+            <input type="hidden" name="__PREFIX__-value" value="{
+    &quot;blocks&quot;: [
+        {
+            &quot;key&quot;: &quot;i55qj&quot;,
+            &quot;type&quot;: &quot;unstyled&quot;,
+            &quot;depth&quot;: 0,
+            &quot;text&quot;: &quot;&quot;,
+            &quot;inlineStyleRanges&quot;: [],
+            &quot;entityRanges&quot;: []
+        }
+    ],
+    &quot;entityMap&quot;: {}
+}" data-draftail-input id="__PREFIX__-value" placeholder="Paragraph">
+
+<script>window.draftail.initEditor('#__PREFIX__\u002Dvalue', {"entityTypes": [{"type": "EMBED", "icon": "media", "description": "Embed"}, {"type": "LINK", "icon": "link", "description": "Link", "attributes": ["url", "id", "parentId"], "whitelist": {"href": "^(http:|https:|undefined$)"}}, {"type": "DOCUMENT", "icon": "doc-full", "description": "Document"}, {"type": "IMAGE", "icon": "image", "description": "Image", "attributes": ["id", "src", "alt", "format"], "whitelist": {"id": true}}], "enableHorizontalRule": true, "inlineStyles": [{"type": "BOLD", "icon": "bold", "description": "Bold"}, {"type": "ITALIC", "icon": "italic", "description": "Italic"}], "blockTypes": [{"label": "H2", "type": "header-two", "description": "Heading 2"}, {"label": "H3", "type": "header-three", "description": "Heading 3"}, {"label": "H4", "type": "header-four", "description": "Heading 4"}, {"type": "ordered-list-item", "icon": "list-ol", "description": "Numbered list"}, {"type": "unordered-list-item", "icon": "list-ul", "description": "Bulleted list"}]}, document.currentScript)<-/script>
+
+            
+            <span></span>
+        </div>
+        
+
+        
+    </div>
+</div></div>
+
+    
+    <div class="stream-menu stream-menu-closed" id="__PREFIX__-appendmenu">
+    <a href="#" class="toggle"><span>Insert block</span></a>
+    <div class="stream-menu-inner">
+        
+        
+            
+            <ul>
+                
+                    <li><button type="button" class="button action-add-block-heading icon icon-placeholder"><span>Heading</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-paragraph icon icon-doc-full"><span>Paragraph</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-image icon icon-image"><span>Image</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-document icon icon-doc-empty"><span>Document</span></button></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+
+</li>
+</script>
+<script type="text/template" id="blockdef-34-newmember-image">
+<li id="__PREFIX__-container" class="sequence-member">
+    <input type="hidden" id="__PREFIX__-deleted" name="__PREFIX__-deleted" value="">
+    <input type="hidden" id="__PREFIX__-order" name="__PREFIX__-order" value="">
+    
+    
+    <input type="hidden" id="__PREFIX__-type" name="__PREFIX__-type" value="image">
+    <input type="hidden" id="__PREFIX__-id" name="__PREFIX__-id" value="">
+
+
+    
+    <div class="sequence-controls">
+        <h3><label for="__PREFIX__-value">Image</label></h3>
+        <div class="button-group button-group-square">
+            <button type="button" id="__PREFIX__-moveup" title="Move up" class="button icon text-replace icon-order-up">Move up</button>
+            <button type="button" id="__PREFIX__-movedown" title="Move down" class="button icon text-replace icon-order-down">Move down</button>
+            <button type="button" id="__PREFIX__-delete" title="Delete" class="button icon text-replace hover-no icon-bin">Delete</button>
+        </div>
+    </div>
+
+
+    <div class="sequence-member-inner ">
+<div class="field model_choice_field widget-admin_image_chooser fieldname-image">
+    <div class="field-content">
+        <div class="input">
+            
+
+<div id="__PREFIX__-value-chooser" class="chooser image-chooser blank">
+
+    <div class="chosen">
+        
+    <div class="preview-image">
+        
+            <img>
+        
+    </div>
+
+
+        <ul class="actions">
+            
+            <li><button type="button" class="button action-choose button-small button-secondary">Change image</button></li>
+            
+                <li><a href="" class="edit-link button button-small button-secondary" target="_blank" rel="noopener noreferrer">Edit this image</a></li>
+            
+        </ul>
+    </div>
+
+    <div class="unchosen">
+        <button type="button" class="button action-choose button-small button-secondary">Choose an image</button>
+    </div>
+
+</div>
+
+<input type="hidden" name="__PREFIX__-value" id="__PREFIX__-value" placeholder="Image">
+<script>createImageChooser("__PREFIX__-value");<-/script>
+
+            
+            <span></span>
+        </div>
+        
+
+        
+    </div>
+</div></div>
+
+    
+    <div class="stream-menu stream-menu-closed" id="__PREFIX__-appendmenu">
+    <a href="#" class="toggle"><span>Insert block</span></a>
+    <div class="stream-menu-inner">
+        
+        
+            
+            <ul>
+                
+                    <li><button type="button" class="button action-add-block-heading icon icon-placeholder"><span>Heading</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-paragraph icon icon-doc-full"><span>Paragraph</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-image icon icon-image"><span>Image</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-document icon icon-doc-empty"><span>Document</span></button></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+
+</li>
+</script>
+<script type="text/template" id="blockdef-34-newmember-document">
+<li id="__PREFIX__-container" class="sequence-member">
+    <input type="hidden" id="__PREFIX__-deleted" name="__PREFIX__-deleted" value="">
+    <input type="hidden" id="__PREFIX__-order" name="__PREFIX__-order" value="">
+    
+    
+    <input type="hidden" id="__PREFIX__-type" name="__PREFIX__-type" value="document">
+    <input type="hidden" id="__PREFIX__-id" name="__PREFIX__-id" value="">
+
+
+    
+    <div class="sequence-controls">
+        <h3><label for="__PREFIX__-value">Document</label></h3>
+        <div class="button-group button-group-square">
+            <button type="button" id="__PREFIX__-moveup" title="Move up" class="button icon text-replace icon-order-up">Move up</button>
+            <button type="button" id="__PREFIX__-movedown" title="Move down" class="button icon text-replace icon-order-down">Move down</button>
+            <button type="button" id="__PREFIX__-delete" title="Delete" class="button icon text-replace hover-no icon-bin">Delete</button>
+        </div>
+    </div>
+
+
+    <div class="sequence-member-inner ">
+<div class="field model_choice_field widget-admin_document_chooser fieldname-document">
+    <div class="field-content">
+        <div class="input">
+            
+
+<div id="__PREFIX__-value-chooser" class="chooser document-chooser blank">
+
+    <div class="chosen">
+        
+    <span class="title"></span>
+
+
+        <ul class="actions">
+            
+            <li><button type="button" class="button action-choose button-small button-secondary">Choose another document</button></li>
+            
+                <li><a href="" class="edit-link button button-small button-secondary" target="_blank" rel="noopener noreferrer">Edit this document</a></li>
+            
+        </ul>
+    </div>
+
+    <div class="unchosen">
+        <button type="button" class="button action-choose button-small button-secondary">Choose a document</button>
+    </div>
+
+</div>
+
+<input type="hidden" name="__PREFIX__-value" id="__PREFIX__-value" placeholder="Document">
+<script>createDocumentChooser("__PREFIX__-value");<-/script>
+
+            
+            <span></span>
+        </div>
+        
+
+        
+    </div>
+</div></div>
+
+    
+    <div class="stream-menu stream-menu-closed" id="__PREFIX__-appendmenu">
+    <a href="#" class="toggle"><span>Insert block</span></a>
+    <div class="stream-menu-inner">
+        
+        
+            
+            <ul>
+                
+                    <li><button type="button" class="button action-add-block-heading icon icon-placeholder"><span>Heading</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-paragraph icon icon-doc-full"><span>Paragraph</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-image icon icon-image"><span>Image</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-document icon icon-doc-empty"><span>Document</span></button></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+
+</li>
+</script><script type="text/template" id="blockdef-39-newmember-heading">
+<li id="__PREFIX__-container" class="sequence-member">
+    <input type="hidden" id="__PREFIX__-deleted" name="__PREFIX__-deleted" value="">
+    <input type="hidden" id="__PREFIX__-order" name="__PREFIX__-order" value="">
+    
+    
+    <input type="hidden" id="__PREFIX__-type" name="__PREFIX__-type" value="heading">
+    <input type="hidden" id="__PREFIX__-id" name="__PREFIX__-id" value="">
+
+
+    
+    <div class="sequence-controls">
+        <h3><label for="__PREFIX__-value">Heading</label></h3>
+        <div class="button-group button-group-square">
+            <button type="button" id="__PREFIX__-moveup" title="Move up" class="button icon text-replace icon-order-up">Move up</button>
+            <button type="button" id="__PREFIX__-movedown" title="Move down" class="button icon text-replace icon-order-down">Move down</button>
+            <button type="button" id="__PREFIX__-delete" title="Delete" class="button icon text-replace hover-no icon-bin">Delete</button>
+        </div>
+    </div>
+
+
+    <div class="sequence-member-inner ">
+<div class="field char_field widget-text_input fieldname-heading full title">
+    <div class="field-content">
+        <div class="input">
+            <input type="text" name="__PREFIX__-value" id="__PREFIX__-value" placeholder="Heading">
+
+            
+            <span></span>
+        </div>
+        
+
+        
+    </div>
+</div></div>
+
+    
+    <div class="stream-menu stream-menu-closed" id="__PREFIX__-appendmenu">
+    <a href="#" class="toggle"><span>Insert block</span></a>
+    <div class="stream-menu-inner">
+        
+        
+            
+            <ul>
+                
+                    <li><button type="button" class="button action-add-block-heading icon icon-placeholder"><span>Heading</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-paragraph icon icon-doc-full"><span>Paragraph</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-image icon icon-image"><span>Image</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-document icon icon-doc-empty"><span>Document</span></button></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+
+</li>
+</script>
+<script type="text/template" id="blockdef-39-newmember-paragraph">
+<li id="__PREFIX__-container" class="sequence-member">
+    <input type="hidden" id="__PREFIX__-deleted" name="__PREFIX__-deleted" value="">
+    <input type="hidden" id="__PREFIX__-order" name="__PREFIX__-order" value="">
+    
+    
+    <input type="hidden" id="__PREFIX__-type" name="__PREFIX__-type" value="paragraph">
+    <input type="hidden" id="__PREFIX__-id" name="__PREFIX__-id" value="">
+
+
+    
+    <div class="sequence-controls">
+        <h3><label for="__PREFIX__-value">Paragraph</label></h3>
+        <div class="button-group button-group-square">
+            <button type="button" id="__PREFIX__-moveup" title="Move up" class="button icon text-replace icon-order-up">Move up</button>
+            <button type="button" id="__PREFIX__-movedown" title="Move down" class="button icon text-replace icon-order-down">Move down</button>
+            <button type="button" id="__PREFIX__-delete" title="Delete" class="button icon text-replace hover-no icon-bin">Delete</button>
+        </div>
+    </div>
+
+
+    <div class="sequence-member-inner ">
+<div class="field char_field widget-draftail_rich_text_area fieldname-paragraph">
+    <div class="field-content">
+        <div class="input">
+            <input type="hidden" name="__PREFIX__-value" value="{
+    &quot;blocks&quot;: [
+        {
+            &quot;key&quot;: &quot;hoyf9&quot;,
+            &quot;type&quot;: &quot;unstyled&quot;,
+            &quot;depth&quot;: 0,
+            &quot;text&quot;: &quot;&quot;,
+            &quot;inlineStyleRanges&quot;: [],
+            &quot;entityRanges&quot;: []
+        }
+    ],
+    &quot;entityMap&quot;: {}
+}" data-draftail-input id="__PREFIX__-value" placeholder="Paragraph">
+
+<script>window.draftail.initEditor('#__PREFIX__\u002Dvalue', {"entityTypes": [{"type": "EMBED", "icon": "media", "description": "Embed"}, {"type": "LINK", "icon": "link", "description": "Link", "attributes": ["url", "id", "parentId"], "whitelist": {"href": "^(http:|https:|undefined$)"}}, {"type": "DOCUMENT", "icon": "doc-full", "description": "Document"}, {"type": "IMAGE", "icon": "image", "description": "Image", "attributes": ["id", "src", "alt", "format"], "whitelist": {"id": true}}], "enableHorizontalRule": true, "inlineStyles": [{"type": "BOLD", "icon": "bold", "description": "Bold"}, {"type": "ITALIC", "icon": "italic", "description": "Italic"}], "blockTypes": [{"label": "H2", "type": "header-two", "description": "Heading 2"}, {"label": "H3", "type": "header-three", "description": "Heading 3"}, {"label": "H4", "type": "header-four", "description": "Heading 4"}, {"type": "ordered-list-item", "icon": "list-ol", "description": "Numbered list"}, {"type": "unordered-list-item", "icon": "list-ul", "description": "Bulleted list"}]}, document.currentScript)<-/script>
+
+            
+            <span></span>
+        </div>
+        
+
+        
+    </div>
+</div></div>
+
+    
+    <div class="stream-menu stream-menu-closed" id="__PREFIX__-appendmenu">
+    <a href="#" class="toggle"><span>Insert block</span></a>
+    <div class="stream-menu-inner">
+        
+        
+            
+            <ul>
+                
+                    <li><button type="button" class="button action-add-block-heading icon icon-placeholder"><span>Heading</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-paragraph icon icon-doc-full"><span>Paragraph</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-image icon icon-image"><span>Image</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-document icon icon-doc-empty"><span>Document</span></button></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+
+</li>
+</script>
+<script type="text/template" id="blockdef-39-newmember-image">
+<li id="__PREFIX__-container" class="sequence-member">
+    <input type="hidden" id="__PREFIX__-deleted" name="__PREFIX__-deleted" value="">
+    <input type="hidden" id="__PREFIX__-order" name="__PREFIX__-order" value="">
+    
+    
+    <input type="hidden" id="__PREFIX__-type" name="__PREFIX__-type" value="image">
+    <input type="hidden" id="__PREFIX__-id" name="__PREFIX__-id" value="">
+
+
+    
+    <div class="sequence-controls">
+        <h3><label for="__PREFIX__-value">Image</label></h3>
+        <div class="button-group button-group-square">
+            <button type="button" id="__PREFIX__-moveup" title="Move up" class="button icon text-replace icon-order-up">Move up</button>
+            <button type="button" id="__PREFIX__-movedown" title="Move down" class="button icon text-replace icon-order-down">Move down</button>
+            <button type="button" id="__PREFIX__-delete" title="Delete" class="button icon text-replace hover-no icon-bin">Delete</button>
+        </div>
+    </div>
+
+
+    <div class="sequence-member-inner ">
+<div class="field model_choice_field widget-admin_image_chooser fieldname-image">
+    <div class="field-content">
+        <div class="input">
+            
+
+<div id="__PREFIX__-value-chooser" class="chooser image-chooser blank">
+
+    <div class="chosen">
+        
+    <div class="preview-image">
+        
+            <img>
+        
+    </div>
+
+
+        <ul class="actions">
+            
+            <li><button type="button" class="button action-choose button-small button-secondary">Change image</button></li>
+            
+                <li><a href="" class="edit-link button button-small button-secondary" target="_blank" rel="noopener noreferrer">Edit this image</a></li>
+            
+        </ul>
+    </div>
+
+    <div class="unchosen">
+        <button type="button" class="button action-choose button-small button-secondary">Choose an image</button>
+    </div>
+
+</div>
+
+<input type="hidden" name="__PREFIX__-value" id="__PREFIX__-value" placeholder="Image">
+<script>createImageChooser("__PREFIX__-value");<-/script>
+
+            
+            <span></span>
+        </div>
+        
+
+        
+    </div>
+</div></div>
+
+    
+    <div class="stream-menu stream-menu-closed" id="__PREFIX__-appendmenu">
+    <a href="#" class="toggle"><span>Insert block</span></a>
+    <div class="stream-menu-inner">
+        
+        
+            
+            <ul>
+                
+                    <li><button type="button" class="button action-add-block-heading icon icon-placeholder"><span>Heading</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-paragraph icon icon-doc-full"><span>Paragraph</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-image icon icon-image"><span>Image</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-document icon icon-doc-empty"><span>Document</span></button></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+
+</li>
+</script>
+<script type="text/template" id="blockdef-39-newmember-document">
+<li id="__PREFIX__-container" class="sequence-member">
+    <input type="hidden" id="__PREFIX__-deleted" name="__PREFIX__-deleted" value="">
+    <input type="hidden" id="__PREFIX__-order" name="__PREFIX__-order" value="">
+    
+    
+    <input type="hidden" id="__PREFIX__-type" name="__PREFIX__-type" value="document">
+    <input type="hidden" id="__PREFIX__-id" name="__PREFIX__-id" value="">
+
+
+    
+    <div class="sequence-controls">
+        <h3><label for="__PREFIX__-value">Document</label></h3>
+        <div class="button-group button-group-square">
+            <button type="button" id="__PREFIX__-moveup" title="Move up" class="button icon text-replace icon-order-up">Move up</button>
+            <button type="button" id="__PREFIX__-movedown" title="Move down" class="button icon text-replace icon-order-down">Move down</button>
+            <button type="button" id="__PREFIX__-delete" title="Delete" class="button icon text-replace hover-no icon-bin">Delete</button>
+        </div>
+    </div>
+
+
+    <div class="sequence-member-inner ">
+<div class="field model_choice_field widget-admin_document_chooser fieldname-document">
+    <div class="field-content">
+        <div class="input">
+            
+
+<div id="__PREFIX__-value-chooser" class="chooser document-chooser blank">
+
+    <div class="chosen">
+        
+    <span class="title"></span>
+
+
+        <ul class="actions">
+            
+            <li><button type="button" class="button action-choose button-small button-secondary">Choose another document</button></li>
+            
+                <li><a href="" class="edit-link button button-small button-secondary" target="_blank" rel="noopener noreferrer">Edit this document</a></li>
+            
+        </ul>
+    </div>
+
+    <div class="unchosen">
+        <button type="button" class="button action-choose button-small button-secondary">Choose a document</button>
+    </div>
+
+</div>
+
+<input type="hidden" name="__PREFIX__-value" id="__PREFIX__-value" placeholder="Document">
+<script>createDocumentChooser("__PREFIX__-value");<-/script>
+
+            
+            <span></span>
+        </div>
+        
+
+        
+    </div>
+</div></div>
+
+    
+    <div class="stream-menu stream-menu-closed" id="__PREFIX__-appendmenu">
+    <a href="#" class="toggle"><span>Insert block</span></a>
+    <div class="stream-menu-inner">
+        
+        
+            
+            <ul>
+                
+                    <li><button type="button" class="button action-add-block-heading icon icon-placeholder"><span>Heading</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-paragraph icon icon-doc-full"><span>Paragraph</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-image icon icon-image"><span>Image</span></button></li>
+                
+                    <li><button type="button" class="button action-add-block-document icon icon-doc-empty"><span>Document</span></button></li>
+                
+            </ul>
+        
+    </div>
+</div>
+
+
+</li>
+</script>
+
+    <script>
+        $(function() {
+            /* Make user confirm before leaving the editor if there are unsaved changes */
+            
+            enableDirtyFormCheck(
+                '#page-edit-form',
+                {
+                    confirmationMessage: 'This page has unsaved changes.',
+
+                    
+                }
+            );
+        });
+    </script>
+
+
+
+
+<script>window.draftail.initEditor('#experience\u002D1\u002Dvalue', {"entityTypes": [{"type": "EMBED", "icon": "media", "description": "Embed"}, {"type": "LINK", "icon": "link", "description": "Link", "attributes": ["url", "id", "parentId"], "whitelist": {"href": "^(http:|https:|undefined$)"}}, {"type": "DOCUMENT", "icon": "doc-full", "description": "Document"}, {"type": "IMAGE", "icon": "image", "description": "Image", "attributes": ["id", "src", "alt", "format"], "whitelist": {"id": true}}], "enableHorizontalRule": true, "inlineStyles": [{"type": "BOLD", "icon": "bold", "description": "Bold"}, {"type": "ITALIC", "icon": "italic", "description": "Italic"}], "blockTypes": [{"label": "H2", "type": "header-two", "description": "Heading 2"}, {"label": "H3", "type": "header-three", "description": "Heading 3"}, {"label": "H4", "type": "header-four", "description": "Heading 4"}, {"type": "ordered-list-item", "icon": "list-ol", "description": "Numbered list"}, {"type": "unordered-list-item", "icon": "list-ul", "description": "Bulleted list"}]}, document.currentScript)</script>
+
+        
+
+                <script>
+                $(function() {
+                    var initializer = StreamBlock({
+    'definitionPrefix': ('blockdef-34'),
+    'childBlocks': ([
+        {
+            'name': ('heading')
+        },
+        {
+            'name': ('paragraph')
+        },
+        {
+            'name': ('image')
+        },
+        {
+            'name': ('document')
+        }
+    ])
+});
+                    initializer('experience');
+                })
+                </script>
+            
+            
+            
+            
+<script>window.initAutoCompleteWidget('id_comments-0-user');</script>
+            
+
+<script type="text/django-form-template" id="id_comments-EMPTY_FORM_TEMPLATE">
+
+
+<script>
+
+(function() {
+    var panel = InlinePanel({
+        formsetPrefix: "id_comments",
+        emptyChildFormPrefix: "comments-__prefix__",
+        canOrder: true,
+        maxForms: 1000
+    });
+
+    
+        panel.initChildControls("comments-0");
+    
+    panel.setHasContent();
+    panel.updateMoveButtonDisabledStates();
+    panel.updateAddButtonState();
+})();
+</script>
+    
+
+                <script>
+                $(function() {
+                    var initializer = StreamBlock({
+    'definitionPrefix': ('blockdef-39'),
+    'childBlocks': ([
+        {
+            'name': ('heading')
+        },
+        {
+            'name': ('paragraph')
+        },
+        {
+            'name': ('image')
+        },
+        {
+            'name': ('document')
+        }
+    ])
+});
+                    initializer('action');
+                })
+                </script>
+            
+            
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block content %}
+<table>
+<form action="{% url 'experience:experience-create' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <tr><td></td><td><input type="submit" value="Submit"></td></tr>
+</form>
+</table>
+{% endblock %}

@@ -26,8 +26,24 @@ class HomePage(Page):
         ('image', ImageChooserBlock()),
         ('rawhtml', blocks.RawHTMLBlock()),
         ('document', DocumentChooserBlock()),
-    ])
+    ], blank=True)
+    aside1 = StreamField([
+        ('heading', blocks.CharBlock(classname="full title")),
+        ('paragraph', blocks.RichTextBlock()),
+        ('image', ImageChooserBlock()),
+        ('rawhtml', blocks.RawHTMLBlock()),
+        ('document', DocumentChooserBlock()),
+    ],blank=True)
+    aside2 = StreamField([
+        ('heading', blocks.CharBlock(classname="full title")),
+        ('paragraph', blocks.RichTextBlock()),
+        ('image', ImageChooserBlock()),
+        ('rawhtml', blocks.RawHTMLBlock()),
+        ('document', DocumentChooserBlock()),
+    ], blank=True)
 
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
+        StreamFieldPanel('aside1'),
+        StreamFieldPanel('aside2'),
     ]

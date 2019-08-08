@@ -291,3 +291,6 @@ ACCOUNT_LOGOUT_ON_GET = True
 
 # Add a Site for your domain in the Django Admin, matching settings.SITE_ID (django.contrib.sites app). I'm not sure why allauth needs this.
 SITE_ID = 1
+ACCOUNT_FORMS = {
+    'signup': 'teratree.forms.SignUpForm'
+}

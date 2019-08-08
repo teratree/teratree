@@ -1,18 +1,12 @@
 {% extends "base.html" %}
-{% load wagtailuserbar %}
 {% load wagtailcore_tags %}
 {% block body_class %}template-homepage{% endblock %}
 {% block back_bar %}{% endblock %}
+{% block aside1 %}{% endblock %}
+{% block aside2 %}{% endblock %}
 
 {% block content %}
-  {% wagtailuserbar %}
-  {% for block in page.body %}
-    {% if block.block_type == 'heading' %}
-      <h1>{{ block.value }}</h1>
-    {% else %}
-      <section class="block-{{ block.block_type }}">
-        {% include_block block %}
-      </section>
-    {% endif %}
-  {% endfor %}
+  {% with stream_field=page.body %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
 {% endblock %}

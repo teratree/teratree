@@ -4,7 +4,7 @@
 {% if experience_list %}
     <ul>
     {% for experience in experience_list %}
-        <li><a href="{% url 'experiment:experience-detail' experience.id %}">{{ experience.id }}</a></li>
+        <li><a href="{% url 'experience:experience-detail' experience.id %}">{{ experience.id }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
@@ -12,5 +12,5 @@
 {% endif %}
 
 
-<p><a href="{% url 'experiment:experience-create' %}">Add an Experience Report</a></p>
+<p><a href="{% url 'experience:experience-create' %}">Add an Experience Report</a></p>
 {% endblock %}

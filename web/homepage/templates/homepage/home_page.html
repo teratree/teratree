@@ -1,16 +1,72 @@
 {% extends "base.html" %}
-{% load wagtailuserbar %}
-{% load wagtailcore_tags %}
+{% load static wagtailcore_tags %}
 {% block body_class %}template-homepage{% endblock %}
-{% block back_bar %}
 
-<div class="teratree-backbar">
+{% block back_bar %}{% endblock %}
+
+{% block content %}
   {% with stream_field=page.body %}
     {% include 'render_stream_field.html' %}
   {% endwith %}
-</div>
 {% endblock %}
 
-{% block content %}
-  {% wagtailuserbar %}
+{% block aside1 %}
+  {% with stream_field=page.aside1 %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
+{% endblock %}
+
+{% block aside2 %}
+  {% with stream_field=page.aside2 %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.main {
+  padding: 0;
+}
+.main .block-rawhtml {
+  margin: 0;
+  display: flex;
+  padding: 0;
+  background: #D1DC47 url("{% static 'homepage/images/contours.png' %}");
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.box {
+  background: #fff;
+  display: flex;
+  flex-basis: calc(33.33333333% - 3.334rem);
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 1rem;
+  padding: 1rem;
+}
+.box:first-child {
+  margin-right: 0;
+}
+.box-title {
+  text-align: center;
+}
+@media only screen and (max-width: 567px) {
+  .main .block-rawhtml {
+    justify-content: flex-start;
+  }
+  .box {
+    flex-basis: calc(100% - 4rem);
+    margin-top: 0rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+  }
+  .box:first-child {
+    margin-top: 1rem;
+  }
+  .box:last-child {
+  }
+}
+</style>
 {% endblock %}

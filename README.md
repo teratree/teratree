@@ -156,7 +156,11 @@ cd web
 heroku container:push -a $DEPLOYMENT_TARGET web
 heroku container:release -a $DEPLOYMENT_TARGET web
 heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py migrate
-heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py loaddata /code/dump.json
+# manage.py loaddata /code/dump-live.json
+# The /media directory in the container is mounted to ./web/media
+# alias aws='docker-compose -f `pwd`/docker-compose.yml run --rm aws'
+# aws s3 sync /media s3://teratree-media
+# heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py loaddata /code/dump.json
 # heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py createsuperuser
 git stash pop
 ```
@@ -166,4 +170,27 @@ Other useful commands:
 ```
 EDITOR=vim heroku config:edit --app $DEPLOYMENT_TARGET
 heroku logs --tail --app $DEPLOYMENT_TARGET
+```
+
+Resetting:
+
+```
+export DATABASE_URL=...
+heroku pg:reset -a $DEPLOYMENT_TARGET DATABASE
+heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py migrate
+heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/psql $DATABASE_URL -c 'DELETE FROM wagtailcore_site CASCADE; DELETE FROM wagtailcore_grouppagepermission CASCADE; DELETE FROM wagtailcore_page CASCADE;'
+heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py loaddata /code/dump.json
+```
+
+Backup:
+
+```
+DATABASE_URL=postgres://ngqfyabpszlkoh:d48a4e89269768c6591743021a0291afe496fd30ab7870b611cbf47ffbfca704@ec2-54-217-219-235.eu-west-1.compute.amazonaws.com:5432/ddsjvmq9qd0pie
+export DEPLOYMENT_TARGET=teratree
+heroku run --type=worker -a $DEPLOYMENT_TARGET pg_dump $DATABASE_URL > web/dump-live-3.sql
+mv db db.old
+docker-compose up
+alias psql='docker-compose -f `pwd`/docker-compose.yml run --rm web psql'
+cat web/dump-live-3.sql | psql -h db -U postgres postgres
+alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python3 manage.py'
 ```
