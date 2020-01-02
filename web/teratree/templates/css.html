@@ -46,6 +46,13 @@ a {
   /* Give the asides an equal flex of 1 between 576px and 992px while everything else is still 100% width */
   .aside { flex: 1 0 0; }
 }
+
+.contained {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+{# 
 /* On large screens, put the asides next to the main content, and set the order */
 @media all and (min-width: 1112px) {
   .main    { flex: 3 0px; }
@@ -55,7 +62,7 @@ a {
   .aside-2 { order: 4; }
   .footer  { order: 5; }
 }
-
+#}
 
 /* Navigation */
 

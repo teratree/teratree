@@ -30,20 +30,38 @@
     </div>
     <div class="search"><span style="width: 1rem"></span></div> 
   </header>
+
+  <!--
+        <div>
+        <h1>Main</h1>
+        {% main_menu %}
+        <h1>Flat</h1>
+        {% flat_menu 'info' %}
+        <h1>Section</h1>
+        {% section_menu max_levels=3 %}
+        <h1>Children</h1>
+        {% children_menu %}
+        </div>
+  -->
+
   {% if messages %}
   <div class="messagebar">
-    {% for message in messages %}
-      <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
-    {% endfor %}
+    <div class="contained">
+      {% for message in messages %}
+        <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+      {% endfor %}
+    </div>
   </div>
   {% endif %}
   {% block back_bar %}
-    <div class="backbar">
-      <span><a href="javascript:history.back()">{% block back_bar_text %}Back{% endblock %}</a></span>
-    </div>
+  <div class="backbar">
+    <span><a href="javascript:history.back()">{% block back_bar_text %}Back{% endblock %}</a></span>
+  </div>
   {% endblock %}
   <article class="main {% block content_background_class %}{% endblock %}">
-    {% block content %}{% endblock %}
+    <div class="contained">
+      {% block content %}{% endblock %}
+    </div>
   </article>
   {% block aside1 %}
   <aside class="aside aside-1"></aside>
@@ -52,10 +70,12 @@
   <aside class="aside aside-2"></aside>
   {% endblock %}
   <footer class="footer">
-    {% include 'mailchimp.html' %}
-    <!-- teraTree is a trademark and trading name of James Gardner -->
-    <p style="padding-bottom: 0; margin-bottom: 0">&copy; <a href="{% slugurl 'legal' %}">teraTree</a> 2019 All Rights Reserved.</p><p style="padding-top: 0.4rem; margin-top: 0">See our <a href="{% slugurl 'terms-and-conditions' %}">Terms and Conditions</a> and <a href="{% slugurl 'privacy-policy' %}">Privacy Policy</a>.</p>
-    <p><a href="https://twitter.com/teratreeorg"><i class="fab fa-twitter" style="font-size: 32px;"></i></a></p>
+    <div class="contained">
+      {% include 'mailchimp.html' %}
+      <!-- teraTree is a trademark and trading name of James Gardner -->
+      <p style="padding-bottom: 0; margin-bottom: 0">&copy; <a href="{% slugurl 'legal' %}">teraTree</a> 2019 All Rights Reserved.</p><p style="padding-top: 0.4rem; margin-top: 0">See our <a href="{% slugurl 'terms-and-conditions' %}">Terms and Conditions</a> and <a href="{% slugurl 'privacy-policy' %}">Privacy Policy</a>.</p>
+      <p><a href="https://twitter.com/teratreeorg"><i class="fab fa-twitter" style="font-size: 32px;"></i></a></p>
+    </div>
   </footer>
 </div>
 <script type="text/javascript" src="{% static 'js/scripts.js' %}"></script>
