@@ -25,14 +25,21 @@ from django.views.generic.base import RedirectView
 from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 
 
+from .views import ProfileUpdate, UserNameUpdate, dashboard, error500
+
 
 app_name = 'teratree'
 urlpatterns = [
+    # path('_internal/404', error404),
+    path('_internal/500', error500),
+    path('dashboard/name', UserNameUpdate.as_view(), name='dashboard-name'),
+    path('dashboard/profile', ProfileUpdate.as_view(), name='dashboard-profile'),
+    path('dashboard', dashboard, name='dashboard'),
     path('admin/autocomplete/', include(autocomplete_admin_urls)),
     # Instead, follow this pattern
-    path('experience/', include('experience.urls')),
-    path('data/', include('data.urls')),
-    path('experiment/', include('experiment.urls')),
+    # path('experience/', include('experience.urls')),
+    # path('data/', include('data.urls')),
+    # path('experiment/', include('experiment.urls')),
     # This is how wagtail recommends it is done, don't copy this
     re_path(r'^documents/', include(wagtaildocs_urls)),
     path('cms/login/', RedirectView.as_view(url='/accounts/login', query_string=True, permanent=False), name='index'),

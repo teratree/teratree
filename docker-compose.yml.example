@@ -2,41 +2,57 @@ version: "3.7"
 
 services:
   aws:
-    build: awsi
+    build: aws
     environment:
       AWS_ACCESS_KEY_ID: XXX
       AWS_SECRET_ACCESS_KEY: XXX
+    volumes:
+      - ./web/media:/media
   git:
     build: git
-  heroku:
-    build: heroki
     environment:
-      HEROKU_API_KEY: /credentials
+      GIT_COMMITTER_NAME: 'Your name'
+      GIT_COMMITTER_EMAIL: ''
+      GIT_AUTHOR_NAME: 'Your name'
+      GIT_AUTHOR_EMAIL: ''
+      GIT_SSH_COMMAND: 'ssh -i /ssh/id_rsa'
     volumes:
-      - ./heroku/credentials:/credentials
+      - ./git/ssh:/ssh
+      - ./:/repo
   db:
-    image: postgres:alpine
-    ports:
-      - "5432:5432"
+    image: mdillon/postgis:11-alpine
     volumes:
       - ./db:/var/lib/postgresql/data
   web:
     build: ./web
     volumes:
-      - ./web:/code:rw
+      - ./web/staticcache/:/code/staticcache/:rw
+      - ./web/base-requirements.txt:/code/base-requirements.txt:ro
+      - ./web/freeze.txt:/code/freeze.txt:rw
+      - ./web/blog/:/code/blog/:ro
+      - ./web/data/:/code/data/:ro
+      - ./web/experience/:/code/experience/:ro
+      - ./web/experiment:/code/experiment/:ro
+      - ./web/homepage/:/code/homepage/:ro
+      - ./web/manage.py:/code/manage.py:ro
+      - ./web/meeting/:/code/meeting/:ro
+      - ./web/requirements.txt:/code/requirements.txt:ro
+      - ./web/run.sh:/code/run.sh:ro
+      - ./web/run.sh.local:/code/run.sh.local:ro
+      - ./web/teratree/:/code/teratree/:ro
     ports:
       - "8000:8000"
     environment:
       PORT: 8000
       DJANGO_SETTINGS_MODULE: teratree.settings.dev
-      DATABASE_URL: postgres://postgres@db/postgres
+      DATABASE_URL: postgis://postgres@db/postgres
       MEDIA_AWS_ACCESS_KEY_ID: XXX
       MEDIA_AWS_SECRET_ACCESS_KEY: XXX
       MEDIA_AWS_STORAGE_BUCKET_NAME: XXX
       SECRET_KEY: XXX
       EMAIL_PORT: 465
-      EMAIL_USE_TLS: "false"
-      EMAIL_USE_SSL: "true"
+      EMAIL_USE_TLS: "true"
+      EMAIL_USE_SSL: "false"
       ALLOWED_HOSTS: www.example.com,example.com,localhost
       ADMINS: james@example.com
       DEFAULT_FROM_EMAIL: james@example.com
@@ -44,9 +60,7 @@ services:
       EMAIL_HOST_PASSWORD: XXX
       EMAIL_HOST_USER: XXX
       SERVER_EMAIL: james@example.com
-    command: /bin/bash /code/run.sh.local
-    depends_on:
-      - db
+    command: /bin/sh /code/run.sh.local
   chrome:
     image: selenium/standalone-chrome-debug:3.141.59-radium
     volumes:

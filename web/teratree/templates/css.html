@@ -1,0 +1,297 @@
+{% load static %}
+
+<!-- https://css-tricks.com/snippets/css/a-guide-to-flexbox/ -->
+<style>
+body {
+  background: lightgrey;
+}
+/* Minimal reset */
+body {
+  padding: 0;
+  margin: 0;
+}
+/* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
+a {
+ /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+/* Main Layout */
+.wrapper {
+  display: flex;  
+  /* Make each child wrap, rather than fit in */
+  flex-flow: row wrap;
+}
+.wrapper > * {
+  padding: 1rem;
+  /* Mobile first, each item fills the width with a flex-basis of 100% meaning the header, main and footer all try to be 100% */
+  flex-basis: 100%;
+}
+
+/* on small screens, put the asides side by side */
+@media all and (min-width: 576px) {
+  /* Give the asides an equal flex of 1 between 576px and 992px while everything else is still 100% width */
+  .aside { flex: 1 0 0; }
+}
+/* On large screens, put the asides next to the main content, and set the order */
+@media all and (min-width: 1112px) {
+  .main    { flex: 3 0px; }
+  .aside-1 { order: 1; } 
+  .main    { order: 2; }
+  .main2   { order: 3; }
+  .aside-2 { order: 4; }
+  .footer  { order: 5; }
+}
+
+
+/* Navigation */
+
+.topnav {
+  padding: 1rem;
+  padding-right: 4rem;
+  padding-left: 2rem;
+  padding-top: 3rem;
+  height: 100vh;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: -100%;
+  background-color: rgb(29,64,46);
+  color: white;
+  overflow-x: hidden; 
+  transition: 0.5s;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Position and style the close button (top right corner) */
+.closebtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.openbtn, .closebtn {
+  display: block;
+  cursor: pointer;
+}
+.topnav a {
+  display: block;
+}
+.navwrapper { display: flex; order: 1; align-items: center;}
+.logo { display: flex; order: 2; align-items: center;}
+.search { display: flex; order: 3; align-items: center;}
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media all and (min-width: 576px) {
+  .topnav {
+    /* Reset all these back to the browser defaults */
+    position: static;
+    padding: 0;
+    width: auto;
+    z-index: auto;
+    top: auto;
+    left: auto;
+    height: auto;
+    background-color: transparent;
+    max-width: none;
+    flex-direction: row;
+    display: flex;
+    overflow-x: visible;
+    transition: none;
+    align-items: center;
+  }
+  /* Hide the buttons and elements we don't need */
+  .openbtn, .closebtn, .search {
+    display: none;
+  }
+  /* Style the links inside the navigation bar */
+  .topnav a {
+    float: left;
+    margin-right: 1rem;
+  }
+  .topnav a:last-child { margin-right: 0rem; }
+  /* Set the correct order */
+  .logo { order: 1; }
+  .navwrapper { justify-content: flex-end; order: 2; }
+  .search { order: 3; }
+}
+
+
+/* Main boxes */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  padding: 1rem;
+  /*
+  flex-flow: row wrap;
+  display: flex;
+  */
+}
+/*
+.box {
+  display: flex;
+  padding: 1rem;
+  flex-basis: calc(100% - 2em);
+  background: purple;
+}
+*/
+
+@media all and (min-width: 576px) {
+  .main {
+  }
+  /*
+  .box {
+    padding: 1rem;
+    flex-basis: calc(25% - 2em);
+  }
+  */
+}
+
+/*
+ font-size: 24px; font-weight: bold; text-decoration: none"
+*/
+
+
+/* Styles */
+
+@font-face {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  src: url({% static 'fonts/OpenSans-Regular.ttf' %});
+}
+@font-face {
+  font-family: 'Raleway';
+  font-weight: 600;
+  src: url({% static 'fonts/Raleway-SemiBold.ttf' %});
+}
+@font-face {
+  font-family: 'Raleway';
+  font-weight: 400;
+  src: url({% static 'fonts/Raleway-Regular.ttf' %});
+}
+body, input, textarea, label, p, span, div {
+  font-family: 'Raleway', sans-serif;
+}
+input {
+  margin-bottom: 0.5rem;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.openbtn, .closebtn, .header a, .header a:link, .header a:visited {
+  color: white;
+  text-decoration: none;
+}
+.openbtn {
+  font-size: 1.2rem;
+}
+.header a:hover {
+  text-decoration: underline;
+}
+.footer {
+  font-size: 0.8rem;
+  background: lightgreen;
+}
+.main {
+  /*text-align: left;*/
+  background: white; /*background: deepskyblue*/
+}
+.aside-1 {
+  background: white;
+  /*background: gold;*/
+}
+.aside-2 {
+  background: white;
+  /*background: hotpink;*/
+}
+.header {
+  background: #037971;
+}
+.backbar {
+  background: #D1DC47 url("{% static 'homepage/images/contours.png' %}");
+}
+.main a {
+  color: #037971;
+}
+input, textarea, button {
+  font-size: 1rem;
+  outline: none;
+  border-radius: 0;
+  border: 0;
+  padding: 1rem;
+  text-decoration: none;
+  color: rgb(70,70,70);
+  font-weight: normal;
+  background: #eee;
+}
+button, input[type=submit] {
+  background: rgb(29,64,46);
+  color: #eee;
+}
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+.footer a {
+  color: rgb(4, 49, 56);
+}
+
+
+.block-image img {
+  max-width: 100%;
+}
+/*
+@media all and (min-width: 576px) {
+  .block-image img {
+    width: none;
+  }
+}
+*/
+textarea {
+  max-width: 100%;
+}
+@media all and (min-width: 576px) {
+  textarea {
+    width: none;
+  }
+}
+
+label {
+   display: block;
+}
+</style>
+
+<script>
+function openNav() {
+  document.getElementById("topnav").style.left = "0px";
+}
+
+function closeNav() {
+  document.getElementById("topnav").style.left = "-100%";
+}
+</script>

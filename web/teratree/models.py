@@ -36,15 +36,37 @@ class FormField(AbstractFormField):
 
 from wagtail.contrib.forms.edit_handlers import FormSubmissionsPanel
 
+from wagtail.core.models import Page
+from wagtail.core.fields import StreamField
+from wagtail.core import blocks
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.admin.edit_handlers import StreamFieldPanel
+from wagtail.documents.blocks import DocumentChooserBlock
+
 
 class FormPage(AbstractEmailForm):
-    intro = RichTextField(blank=True)
-    thank_you_text = RichTextField(blank=True)
+
+    intro = StreamField([
+        ('heading', blocks.CharBlock(classname="full title")),
+        ('paragraph', blocks.RichTextBlock()),
+        ('image', ImageChooserBlock()),
+    ], null=True, blank=True)
+    outro = StreamField([
+        ('heading', blocks.CharBlock(classname="full title")),
+        ('paragraph', blocks.RichTextBlock()),
+        ('image', ImageChooserBlock()),
+    ], null=True, blank=True)
+    thank_you_text = StreamField([
+        ('heading', blocks.CharBlock(classname="full title")),
+        ('paragraph', blocks.RichTextBlock()),
+        ('image', ImageChooserBlock()),
+    ], null=True, blank=True)
 
     content_panels = AbstractEmailForm.content_panels + [
-        FieldPanel('intro', classname="full"),
+        StreamFieldPanel('intro'),
         InlinePanel('form_fields', label="Form fields"),
-        FieldPanel('thank_you_text', classname="full"),
+        StreamFieldPanel('outro'),
+        StreamFieldPanel('thank_you_text'),
         MultiFieldPanel([
             FieldRowPanel([
                 FieldPanel('from_address', classname="col6"),
@@ -54,4 +76,3 @@ class FormPage(AbstractEmailForm):
         ], "Email"),
         FormSubmissionsPanel(),
     ]
-

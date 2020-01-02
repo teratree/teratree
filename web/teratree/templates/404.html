@@ -1,12 +1,9 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
 {% block body_class %}template-homepage{% endblock %}
-{% block back_bar %}{% endblock %}
 {% block aside1 %}{% endblock %}
 {% block aside2 %}{% endblock %}
 
 {% block content %}
-  {% with stream_field=page.thank_you_text %}
-    {% include 'render_stream_field.html' %}
-  {% endwith %}
+  <h1>Not Found</h1>
+  <p>We're sorry but the page you were looking for can't be found.</p>
 {% endblock %}

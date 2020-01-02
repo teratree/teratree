@@ -2,6 +2,7 @@ from allauth.account.forms import SignupForm as AllAuthSignUpForm
 from experiment.models import MAX_LENGTH
 from teratree.models import Profile
 from django import forms
+from django.conf import settings
 
 
 class SignUpForm(AllAuthSignUpForm):

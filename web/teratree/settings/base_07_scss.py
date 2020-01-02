@@ -52,32 +52,32 @@ See https://github.com/jrief/django-sass-processor for the full information.
 
 from .base_06_timezone import *
 
-for finder in [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    # 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'sass_processor.finders.CssFinder',
-]:
-    if finder not in STATICFILES_FINDERS:
-        STATICFILES_FINDERS.append(finder)
-
-for app in [
-    'sass_processor',
-]:
-    if app not in INSTALLED_APPS:
-        INSTALLED_APPS.append(app)
-
-# Optionally, add a list of additional search paths, the SASS compiler may examine when using the @import "..."; statement in SASS/SCSS files:
-#
-# import os
-# 
-# SASS_PROCESSOR_INCLUDE_DIRS = [
-#     os.path.join(PROJECT_PATH, 'extra-styles/scss'),
-#     os.path.join(PROJECT_PATH, 'node_modules'),
-# ]
-# 
-# Other settings you can set:
-# 
-# SASS_PROCESSOR_AUTO_INCLUDE = False
-# SASS_PROCESSOR_INCLUDE_FILE_PATTERN = r'^.+\.scss$'
-# SASS_PRECISION = 8
-# SASS_OUTPUT_STYLE = 'compact'
+# DISABLE FOR NOW # for finder in [
+# DISABLE FOR NOW #     'django.contrib.staticfiles.finders.FileSystemFinder',
+# DISABLE FOR NOW #     # 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+# DISABLE FOR NOW #     'sass_processor.finders.CssFinder',
+# DISABLE FOR NOW # ]:
+# DISABLE FOR NOW #     if finder not in STATICFILES_FINDERS:
+# DISABLE FOR NOW #         STATICFILES_FINDERS.append(finder)
+# DISABLE FOR NOW # 
+# DISABLE FOR NOW # for app in [
+# DISABLE FOR NOW #     'sass_processor',
+# DISABLE FOR NOW # ]:
+# DISABLE FOR NOW #     if app not in INSTALLED_APPS:
+# DISABLE FOR NOW #         INSTALLED_APPS.append(app)
+# DISABLE FOR NOW # 
+# DISABLE FOR NOW # # Optionally, add a list of additional search paths, the SASS compiler may examine when using the @import "..."; statement in SASS/SCSS files:
+# DISABLE FOR NOW # #
+# DISABLE FOR NOW # # import os
+# DISABLE FOR NOW # # 
+# DISABLE FOR NOW # # SASS_PROCESSOR_INCLUDE_DIRS = [
+# DISABLE FOR NOW # #     os.path.join(PROJECT_PATH, 'extra-styles/scss'),
+# DISABLE FOR NOW # #     os.path.join(PROJECT_PATH, 'node_modules'),
+# DISABLE FOR NOW # # ]
+# DISABLE FOR NOW # # 
+# DISABLE FOR NOW # # Other settings you can set:
+# DISABLE FOR NOW # # 
+# DISABLE FOR NOW # # SASS_PROCESSOR_AUTO_INCLUDE = False
+# DISABLE FOR NOW # # SASS_PROCESSOR_INCLUDE_FILE_PATTERN = r'^.+\.scss$'
+# DISABLE FOR NOW # # SASS_PRECISION = 8
+# DISABLE FOR NOW # # SASS_OUTPUT_STYLE = 'compact'

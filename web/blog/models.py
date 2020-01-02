@@ -73,7 +73,7 @@ class CommentsMixIn:
 from django.db import models
 
 # New imports added for ParentalKey, Orderable, InlinePanel, ImageChooserPanel
-class BlogPage(Page):
+class BlogPage(Page, CommentsMixIn):
     date = models.DateField("Post date")
     time = models.TimeField("Post time")
     intro = models.CharField(max_length=1250)

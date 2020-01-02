@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block body_class %}template-homepage{% endblock %}
+{% block aside1 %}{% endblock %}
+{% block aside2 %}{% endblock %}
+
+{% block content %}
+  <h1>Dashboard</h1>
+  <ul>
+    <li><a href="{% url 'dashboard-name' %}">Change Name</a></li>
+    <li><a href="{% url 'account_change_password' %}">Change Password</a></li>
+    <li><a href="{% url 'account_email' %}">Change Email</a></li>
+    <li><a href="{% url 'dashboard-profile' %}">Update Settings</a></li>
+  </ul>
+  {% if request.user.is_staff %}
+  <h2>Admin Access</h2>
+  <ul>
+    <li><a href="{% url 'admin:index' %}">Django Admin</a></li>
+    <li><a href="{% url 'wagtailadmin_home' %}">Wagtail CMS</a></li>
+  </ul>
+  {% endif %}
+{% endblock %}

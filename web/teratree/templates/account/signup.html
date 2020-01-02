@@ -35,7 +35,7 @@
   {{ form.email }}<br>
   {{ form.password1 }}<br>
   <br>
-  {{ form.agree_to_website_terms }} I agree to the <a href="{% slugurl 'terms-and-conditions' %}">Terms and Conditions</a><br>
+  {{ form.agree_to_website_terms }} I agree to the <a target="_blank" href="{% slugurl 'terms-and-conditions' %}">Terms and Conditions</a><br>
   {{ form.opt_in_to_newsletter }} Please sign me up to the newsletter<br>
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />

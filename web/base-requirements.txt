@@ -6,4 +6,3 @@ gunicorn[gevent]
 psycopg2-binary
 selenium
 whitenoise
-libsass

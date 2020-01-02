@@ -125,38 +125,54 @@ Load the viewer and enter the address `localhost:5900` while the `chrome` docker
 
 ### Release to Heroku
 
-Make sure static files are up to date:
-
-```
-rm -r web/staticcache
-manage.py compilescss
-manage.py collectstatic --noinput --link | grep -v 'Found another file with the destination path'
-```
-
 Set the deployment target to the Heroku app name:
 
 ```
 export DEPLOYMENT_TARGET=teratree-staging
 ```
 
+Set up your local alias:
+
+```
+alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python3 manage.py'
+```
+
+If you are going to deploy data from a local instance, dump it now:
+
+```
+manage.py dumpdata --natural-foreign --natural-primary --indent 2 --format json > web/dump.json
+```
+
+Or to get the data from the live site:
+
+```
+heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py dumpdata --natural-foreign --natural-primary --indent 2 --format json > web/dump.json
+```
+
+The first time you deploy you need to set create the PostGIS extension and the database tables, then remove unncessary Wagtail data before loading your data:
+
+```
+echo 'CREATE EXTENSION postgis;' | heroku pg:psql -a $DEPLOYMENT_TARGET
+heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py migrate
+# Danger, only run this if you are setting up a fresh database
+# heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py wipedb
+# heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py loaddata /code/web/dump.json
+```
+
 Then commit any changes you want to deploy.
 
 Finally run these one at a time, otherwise they might not all get run:
 
-
 ```
-alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python3 manage.py'
-manage.py dumpdata --natural-foreign --natural-primary --indent 2 --format json > web/dump.json
-
 # See https://devcenter.heroku.com/articles/local-development-with-docker-compose
 heroku login
 heroku container:login
 git stash
+manage.py collectstatic --clear --noinput | grep -v 'Found another file with the destination path'
 cd web
 heroku container:push -a $DEPLOYMENT_TARGET web
 heroku container:release -a $DEPLOYMENT_TARGET web
 heroku run --type=worker -a $DEPLOYMENT_TARGET /usr/bin/python3 manage.py migrate
-# manage.py loaddata /code/dump-live.json
 # The /media directory in the container is mounted to ./web/media
 # alias aws='docker-compose -f `pwd`/docker-compose.yml run --rm aws'
 # aws s3 sync /media s3://teratree-media
@@ -193,4 +209,5 @@ docker-compose up
 alias psql='docker-compose -f `pwd`/docker-compose.yml run --rm web psql'
 cat web/dump-live-3.sql | psql -h db -U postgres postgres
 alias manage.py='docker-compose -f `pwd`/docker-compose.yml run --rm web python3 manage.py'
+manage.py migrate
 ```

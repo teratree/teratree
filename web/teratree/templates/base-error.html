@@ -1,7 +1,4 @@
 {% load static %}
-{% load menu_tags %}
-{% load wagtailcore_tags %}
-{% load wagtailuserbar %}
 <!DOCTYPE html>
 <html class="no-js" lang="en">
   <head>
@@ -23,43 +20,25 @@
     <div class="navwrapper">
       <nav id="topnav" class="topnav">
         <span class="closebtn" onclick="closeNav()">&#10005;</span>
-        {% main_menu template="main_menu.html" %}
-        {% include "user.html" %}
       </nav>
       <span class="openbtn" id="open" onclick="openNav()">&#9776;</span>
     </div>
     <div class="search"><span style="width: 1rem"></span></div> 
   </header>
-  {% if messages %}
-  <div class="messagebar">
-    {% for message in messages %}
-      <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
-  {% block back_bar %}
-    <div class="backbar">
-      <span><a href="javascript:history.back()">{% block back_bar_text %}Back{% endblock %}</a></span>
-    </div>
-  {% endblock %}
   <article class="main {% block content_background_class %}{% endblock %}">
     {% block content %}{% endblock %}
   </article>
   {% block aside1 %}
-  <aside class="aside aside-1"></aside>
   {% endblock %}
   {% block aside2 %}
-  <aside class="aside aside-2"></aside>
   {% endblock %}
   <footer class="footer">
-    {% include 'mailchimp.html' %}
     <!-- teraTree is a trademark and trading name of James Gardner -->
-    <p style="padding-bottom: 0; margin-bottom: 0">&copy; <a href="{% slugurl 'legal' %}">teraTree</a> 2019 All Rights Reserved.</p><p style="padding-top: 0.4rem; margin-top: 0">See our <a href="{% slugurl 'terms-and-conditions' %}">Terms and Conditions</a> and <a href="{% slugurl 'privacy-policy' %}">Privacy Policy</a>.</p>
+    <p style="padding-bottom: 0; margin-bottom: 0">&copy; teraTree 2019 All Rights Reserved.</p><p style="padding-top: 0.4rem; margin-top: 0">See our Terms and Conditions and Privacy Policy.</p>
     <p><a href="https://twitter.com/teratreeorg"><i class="fab fa-twitter" style="font-size: 32px;"></i></a></p>
   </footer>
 </div>
 <script type="text/javascript" src="{% static 'js/scripts.js' %}"></script>
 {% block extra_js %}{% endblock %}
-{% wagtailuserbar %}
   </body>
 </html>

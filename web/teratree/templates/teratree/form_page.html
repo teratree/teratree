@@ -6,11 +6,18 @@
 {% block aside2 %}{% endblock %}
 
 {% block content %}
-        <h1>{{ page.title }}</h1>
-        {{ page.intro|richtext }}
-        <form action="{% pageurl page %}" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit">
-        </form>
+  <h1>{{ page.title }}</h1>
+
+  {% with stream_field=page.intro %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
+
+  <form action="{% pageurl page %}" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit">
+  </form>
+  {% with stream_field=page.outro %}
+    {% include 'render_stream_field.html' %}
+  {% endwith %}
 {% endblock %}
